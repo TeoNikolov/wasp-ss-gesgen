@@ -1,0 +1,36 @@
+version: '3.8'
+
+volumes:
+    appdata:        
+        name: 'appdata'
+        driver: local
+        driver_opts:
+            type: none
+            device: './data'
+            o: 'bind'
+    output:
+        name: 'output'
+        driver: local
+        driver_opts:
+            type: none
+            o: 'bind'
+            device: './output'
+
+services:
+    gesgen:
+        build:
+            context: ./src/ZeroEGGS/
+            dockerfile: Dockerfile
+        volumes:
+          - type: volume
+            source: 'appdata'
+            target: /app/data/
+            read_only: true
+            volume:
+                nocopy: true
+          - type: volume
+            source: 'output'
+            target: /app/output/
+            volume:
+                nocopy: true
+        tty: true
