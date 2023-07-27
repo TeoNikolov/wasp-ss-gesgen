@@ -1,0 +1,19 @@
+=================
+Generate Gestures
+=================
+# Find the "...gesgen" container
+docker ps
+
+# Bash into the container
+docker exec -it <gesgen container id> bash
+python3.8 ./generate.py -o "/app/data/gesgen_options_v1.json" -s "/app/data/styles/067_Speech_2_x_1_0.bvh" -a "/app/data/audio/s01_067_Speech_2_x_1_0_cut.wav" -p "/app/output/bvh/" -r 1234 -fp "/app/data/start_poses/037_Flirty_1_x_1_0.bvh" -n "test" -t 1.0
+
+==================
+Visualize Gestures
+==================
+# Find the "...visual" container
+docker ps
+
+# Bash into the container; we need to run a virtual display or Blender won't render
+docker exec -it <visual container id> xvfb-run -s ":99" -s '-screen 0 1024x700x24 -ac' bash
+/blender/blender-2.83.0-linux64/blender -b --python blender_render.py -- --input "/app/output/bvh/test.bvh" --duration 9999 --video --res_x 640 --res_y 480 -o "/app/output/mp4/"
