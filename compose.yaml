@@ -34,3 +34,20 @@ services:
             volume:
                 nocopy: true
         tty: true
+    visual:
+        build:
+            context: ./src/genea_visualizer/celery-queue/
+            dockerfile: Dockerfile
+        volumes:
+          - type: volume
+            source: 'appdata'
+            target: /app/data/
+            read_only: true
+            volume:
+                nocopy: true
+          - type: volume
+            source: 'output'
+            target: /app/output/
+            volume:
+                nocopy: true
+        tty: true
