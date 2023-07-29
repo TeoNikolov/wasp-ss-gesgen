@@ -9,18 +9,26 @@ This file is licensed under the MIT license. See LICENSE.txt for details.
     <link rel="icon" href="data:,">
     <meta charset="utf-8">
     <title>WASP-SS2023-GesGen</title>
-    <meta name="description" content="WASP Summer School 2023 gesure generation web application.">
+    <meta name="description" content="WASP Summer School 2023 gesture generation playground.">
     <meta name="author" content="Teodor Nikolov">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="design/style.css">
+    <script src="/static/javascript/api.js" type="text/javascript"></script>
+    <script src="/static/javascript/code.js" type="text/javascript"></script>
 </head>
 
 <body data-theme="a">
-    <p>Hello world!</p>
+    <h1>WASP Summer School 2023 Gesture Generation Playground</h1>
+    <label for="style-selector">Choose a style:</label>
+    <select id="style-selector" name="styles">
+        <!-- Populated dynamically -->
+    </select>
 
   <!-- build:js:generic startup.min.js -->
   <!-- <script src="startup.js"></script> -->
   <!-- /build -->
+
+  <script src="/static/javascript/startup.js"></script>
 </body>
 
 </html>
