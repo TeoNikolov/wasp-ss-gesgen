@@ -5,9 +5,10 @@
 # file that should have been included as part of this package.
 
 from fastapi import FastAPI
+from starlette.responses import FileResponse
 
 app = FastAPI()
 
 @app.get("/")
 def read_root():
-	return {"Hello": "World"}
+	return FileResponse("./index.html")
