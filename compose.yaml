@@ -21,6 +21,7 @@ services:
         build:
             context: ./src/ZeroEGGS/
             dockerfile: Dockerfile
+        image: wasp-ss2023-gesgen
         volumes:
           - type: volume
             source: 'appdata'
@@ -38,6 +39,7 @@ services:
         build:
             context: ./src/genea_visualizer/celery-queue/
             dockerfile: Dockerfile
+        image: wasp-ss2023-visual
         volumes:
           - type: volume
             source: 'appdata'
