@@ -53,3 +53,12 @@ services:
             volume:
                 nocopy: true
         tty: true
+    web:
+        build:
+            context: ./src/app/
+            dockerfile: Dockerfile
+        environment: 
+         -  INTERNAL_WEB_PORT=${INTERNAL_WEB_PORT}
+        image: wasp-ss2023-web
+        ports:
+         -  ${PUBLIC_WEB_PORT}:${INTERNAL_WEB_PORT}
