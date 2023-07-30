@@ -12,17 +12,31 @@ This file is licensed under the MIT license. See LICENSE.txt for details.
     <meta name="description" content="WASP Summer School 2023 gesture generation playground.">
     <meta name="author" content="Teodor Nikolov">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="design/style.css">
+    <link rel="stylesheet" href="/static/css/style.css">
     <script src="/static/javascript/api.js" type="text/javascript"></script>
     <script src="/static/javascript/code.js" type="text/javascript"></script>
 </head>
 
 <body data-theme="a">
     <h1>WASP Summer School 2023 Gesture Generation Playground</h1>
-    <label for="style-selector">Choose a style:</label>
-    <select id="style-selector" name="styles">
-        <!-- Populated dynamically -->
-    </select>
+    <h2>Motion Generation (BVH)</h2>
+    <form id="form-gesgen">
+        <input type="file" id="bvh_audio_file" name="audio">
+        <br>
+        <label for="style-selector">Choose a style:</label>
+        <select id="style-selector" name="style">
+            <!-- Populated dynamically -->
+        </select>
+        <br>
+        <label>Temperature:</label>
+        <input id="temp_range" class="inputRange"  type="range"  min="0" max="1" step=0.01 value="0.9" name="temperature"/>
+        <input id="temp_numeric" class="inputNumber" type="number" min="0" max="1" step=0.01 value="0.9" />
+        <br>
+        <label>Seed:</label>
+        <input id="seed_numeric" class="inputNumber" type="number" min="0" max="999999" step=1 />
+        <br>
+        <input type="submit" value="Generate">
+    </form>
 
   <!-- build:js:generic startup.min.js -->
   <!-- <script src="startup.js"></script> -->

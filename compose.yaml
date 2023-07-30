@@ -15,12 +15,19 @@ volumes:
             type: none
             o: 'bind'
             device: './output'
+    temp_storage:
 
 services:
     gesgen:
         build:
             context: ./src/ZeroEGGS/
             dockerfile: Dockerfile
+        depends_on:
+          - redis
+        environment:
+          - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+          - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+          - CELERY_WORKER_TIMEOUT=${CELERY_WORKER_TIMEOUT}
         image: wasp-ss2023-gesgen
         volumes:
           - type: volume
@@ -34,6 +41,9 @@ services:
             target: /app/output/
             volume:
                 nocopy: true
+          - type: volume
+            source: 'temp_storage'
+            target: /shared_storage/
           - ./src/ZeroEGGS:/app/ZeroEGGS
     visual:
         build:
@@ -57,8 +67,12 @@ services:
         build:
             context: ./src/app/
             dockerfile: Dockerfile
+        depends_on:
+          - redis
         environment: 
           - INTERNAL_WEB_PORT=${INTERNAL_WEB_PORT}
+          - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+          - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
         image: wasp-ss2023-web
         ports:
           - ${PUBLIC_WEB_PORT}:${INTERNAL_WEB_PORT}
@@ -74,4 +88,9 @@ services:
             target: /app/output/
             volume:
                 nocopy: true
+          - type: volume
+            source: 'temp_storage'
+            target: /shared_storage/
           - ./src/app:/app
+    redis:
+        image: redis:7-alpine
