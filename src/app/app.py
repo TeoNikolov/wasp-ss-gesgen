@@ -40,15 +40,31 @@ async def get_styles(response: Response):
 	
 	return bvh_files
 
+@app.get("/poses/")
+async def get_styles(response: Response):
+	search_path = Path("/app/data/start_poses/")
+	if not search_path.is_dir():
+		raise HTTPException(status_code = 404, detail="No poses found.")
+	
+	bvh_files = [file.stem for file in search_path.glob("*.bvh")]
+	if len(bvh_files) == 0:
+		raise HTTPException(status_code = 404, detail="No poses found.")
+	
+	return bvh_files
+
 @app.post("/generate_bvh/", status_code=202)
 async def generate_bvh(
 	style : str = Form(...),
 	audio : UploadFile = File(...),
 	temperature : float = Form(...),
-	seed : int = Form(...)
+	seed : int = Form(...),
+	pose : str = Form(...)
 ):
 	if len(style) == 0:
 		raise HTTPException(status_code = 400, detail=f"Style name cannot be empty!")
+
+	if len(pose) == 0:
+		raise HTTPException(status_code = 400, detail=f"Pose name cannot be empty!")
 
 	if audio.content_type != "audio/wav":
 		raise HTTPException(status_code = 400, detail=f"Audio must be a WAV file! Got {audio.content_type}")
@@ -69,6 +85,7 @@ async def generate_bvh(
 
 		task_args = {
 			"style": style,
+			"pose": pose,
 			"audio_filepath": audio_filepath,
 			"temperature": temperature,
 			"seed": seed

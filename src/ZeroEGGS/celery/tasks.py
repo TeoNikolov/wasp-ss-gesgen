@@ -31,6 +31,7 @@ def call_python_process(python_script, script_args):
 @celery_app.task(name="tasks.generate_bvh", bind=True, hard_time_limit=WORKER_TIMEOUT)
 def generate_bvh(self,
                  style : str,
+                 pose : str,
                  audio_filepath : str,
                  temperature : float,
                  seed: int
@@ -44,7 +45,7 @@ def generate_bvh(self,
         "-a", audio_filepath,
         "-p", output_path,
         "-r", str(seed),
-        "-fp", "/app/data/start_poses/037_Flirty_1_x_1_0.bvh",
+        "-fp", f"/app/data/start_poses/{pose}.bvh",
         "-n", output_name,
         "-t", str(temperature)
     ]

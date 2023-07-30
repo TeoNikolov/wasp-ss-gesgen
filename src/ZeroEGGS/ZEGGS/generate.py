@@ -438,7 +438,7 @@ if __name__ == "__main__":
     parser.add_argument('-a', '--audio', type=str, help="Path to audio file", required=False)
     parser.add_argument('-n', '--file_name', type=str,
                         help="Output file name. If not given it will be automatically constructed", required=False)
-    parser.add_argument('-fp', '--first_pose', type=str, help="First pose bvh file", default=None, required=False)
+    parser.add_argument('-fp', '--first_pose', type=Path, help="First pose bvh file", default=None, required=False)
     parser.add_argument('-t', '--temperature', type=float,
                         help="VAE temprature. This adjusts the amount of stochasticity.", nargs="?", default=1.0,
                         required=False)

@@ -4,6 +4,11 @@ function startup() {
             populateStyleSelector(styles);
         });
 
+    getPoses()
+        .then((poses) => {
+            populatePoseSelector(poses);
+        });
+
     // add form listeners
     const form_gg = document.getElementById("form-gesgen");
     form_gg.addEventListener('submit', submitFormGesGen);
@@ -17,7 +22,6 @@ function startup() {
 
     // seed number input
     var seed_numeric = document.getElementById('seed_numeric');
-    console.log(seed_numeric.max)
     seed_numeric.value = getRandomInt(seed_numeric.max)
     seed_numeric.addEventListener('keypress', function(e) {return isNumberKey(e); })
 }
