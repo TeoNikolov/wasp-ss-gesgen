@@ -17,3 +17,11 @@ docker ps
 # Bash into the container; we need to run a virtual display or Blender won't render
 docker exec -it <visual container id> xvfb-run -s ":99" -s '-screen 0 1024x700x24 -ac' bash
 /blender/blender-2.83.0-linux64/blender -b --python blender_render.py -- --input "/app/output/bvh/test.bvh" --duration 9999 --video --res_x 640 --res_y 480 -o "/app/output/mp4/"
+
+===============
+Export Gestures
+===============
+# Find the "...visual" container
+docker ps
+docker exec -it <visual container id> bash
+/blender/blender-2.83.0-linux64/blender -b --python export_fbx.py -- -b "/app/output/bvh/test.bvh" -m "/app/genea_visualizer/model/LaForgeMale.fbx" -o "/app/output/fbx/test2.fbx"
