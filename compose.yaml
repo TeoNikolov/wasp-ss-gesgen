@@ -34,7 +34,7 @@ services:
             target: /app/output/
             volume:
                 nocopy: true
-        tty: true
+          - ./src/ZeroEGGS:/app/ZeroEGGS
     visual:
         build:
             context: ./src/genea_visualizer/celery-queue/
@@ -74,3 +74,4 @@ services:
             target: /app/output/
             volume:
                 nocopy: true
+          - ./src/app:/app
