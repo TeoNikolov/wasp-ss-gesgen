@@ -161,4 +161,13 @@ cython_debug/
 
 # Custom rules
 output/*
-~./output/.gitkeep
+output/bvh/*
+output/fbx/*
+output/mp4/*
+!output/bvh/
+!output/fbx/
+!output/mp4/
+!output/.gitkeep
+!output/bvh/.gitkeep
+!output/fbx/.gitkeep
+!output/mp4/.gitkeep
