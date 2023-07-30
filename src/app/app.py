@@ -44,7 +44,8 @@ async def get_styles(response: Response):
 async def generate_bvh(
 	style : str = Form(...),
 	audio : UploadFile = File(...),
-	temperature : float = Form(...)
+	temperature : float = Form(...),
+	seed : int = Form(...)
 ):
 	if len(style) == 0:
 		raise HTTPException(status_code = 400, detail=f"Style name cannot be empty!")
@@ -54,6 +55,9 @@ async def generate_bvh(
 
 	if temperature < 0 or temperature > 1:
 		raise HTTPException(status_code = 400, detail=f"Temperature must be between 0 and 1! Got {temperature}")
+
+	if not isinstance(seed, int):
+		raise HTTPException(status_code = 400, detail=f"Seed is not an integer!")
 
 	try:
 		# save audio to shared storage
@@ -66,7 +70,8 @@ async def generate_bvh(
 		task_args = {
 			"style": style,
 			"audio_filepath": audio_filepath,
-			"temperature": temperature
+			"temperature": temperature,
+			"seed": seed
 		}
 		task = celery_workers.send_task("tasks.generate_bvh", kwargs=task_args)
 		return "BVH generation started."

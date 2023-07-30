@@ -29,7 +29,12 @@ def call_python_process(python_script, script_args):
     return process
 
 @celery_app.task(name="tasks.generate_bvh", bind=True, hard_time_limit=WORKER_TIMEOUT)
-def generate_bvh(self, style : str, audio_filepath : str, temperature : float):
+def generate_bvh(self,
+                 style : str,
+                 audio_filepath : str,
+                 temperature : float,
+                 seed: int
+                 ):
     python_script = "/app/ZeroEGGS/ZEGGS/generate.py"
     output_path = "/app/output/bvh/"
     output_name = str(Path(audio_filepath).stem)
@@ -38,7 +43,7 @@ def generate_bvh(self, style : str, audio_filepath : str, temperature : float):
         "-s", f"/app/data/styles/{style}.bvh",
         "-a", audio_filepath,
         "-p", output_path,
-        "-r", "1234",
+        "-r", str(seed),
         "-fp", "/app/data/start_poses/037_Flirty_1_x_1_0.bvh",
         "-n", output_name,
         "-t", str(temperature)
