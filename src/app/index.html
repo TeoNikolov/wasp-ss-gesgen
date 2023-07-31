@@ -18,27 +18,34 @@ This file is licensed under the MIT license. See LICENSE.txt for details.
 </head>
 
 <body data-theme="a">
-    <h1>WASP Summer School 2023 Gesture Generation Playground</h1>
+    <h1>WASP Summer School 2023<br>Gesture Generation Playground</h1>
+    <hr>
     <h2>Motion Generation (BVH)</h2>
     <form id="form-gesgen">
+        <label for="bvh_audio_file">Audio source:</label>
         <input type="file" id="bvh_audio_file" name="audio" required />
+        <br>
         <br>
         <label for="pose-selector">Choose a starting pose:</label>
         <select id="pose-selector" name="pose">
             <!-- Populated dynamically -->
         </select>
         <br>
+        <br>
         <label for="style-selector">Choose a style:</label>
         <select id="style-selector" name="style">
             <!-- Populated dynamically -->
         </select>
         <br>
+        <br>
         <label>Temperature:</label>
         <input id="temp_range" class="inputRange"  type="range"  min="0" max="1" step=0.01 value="0.9" name="temperature"/>
         <input id="temp_numeric" class="inputNumber" type="number" min="0" max="1" step=0.01 value="0.9" />
         <br>
+        <br>
         <label>Seed:</label>
         <input id="seed_numeric" class="inputNumber" type="number" min="0" max="999999" step=1 name="seed" />
+        <br>
         <br>
         <input type="submit" value="Generate" />
     </form>

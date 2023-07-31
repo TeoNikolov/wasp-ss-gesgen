@@ -1,3 +1,36 @@
+html, body{
+    height: 100%;
+}
+
+body {
+    text-align: center;
+}
+
+h2 {
+    margin-top: 2em;
+}
+
+form {
+    border: 2px solid lightgray;
+    display: inline-block;
+    padding: 1em;
+}
+
 input:invalid {
-    border: 3px solid red;
+    outline: 2px solid red;
+    background-color: #FFAAAA;
+    color: #AA4444;
+}
+
+input[type=submit] {
+    background-color: #AABBFF;
+    border-width: 2px;
+    border-color: darkgray;
+    border-style: solid;
+    width: 8em;
+    height: 3em;
+}
+
+#temp_numeric {
+    width: 4em;
 }
