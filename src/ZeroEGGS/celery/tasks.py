@@ -36,9 +36,14 @@ def generate_bvh(self,
                  temperature : float,
                  seed: int
                  ):
-    python_script = "/app/ZeroEGGS/ZEGGS/generate.py"
-    output_path = "/app/output/bvh/"
+
+    if os.environ["SERVER_MODE"] == "1":
+        output_path = "/shared_storage/"
+    else:
+        output_path = "/app/output/bvh/"
     output_name = str(Path(audio_filepath).stem)
+
+    python_script = "/app/ZeroEGGS/ZEGGS/generate.py"
     script_args = [
         "-o", "/app/data/gesgen_options_v1.json",
         "-s", f"/app/data/styles/{style}.bvh",
@@ -64,7 +69,12 @@ def generate_bvh(self,
     if process.returncode != 0:
         raise TaskFailure(process.stderr.read().decode("utf-8"))
 
-    return [output_path + output_name + ".bvh", output_path + output_name + ".wav"]
+    # These are useful ONLY in SERVER_MODE with "shared_storage"
+    task_result = {
+         "public": [output_name + ".bvh", output_name + ".wav"],
+         "internal": [output_path + output_name + ".bvh", output_path + output_name + ".wav"]
+    }
+    return task_result
 
 @celery_app.task(name="tasks.test", bind=True, hard_time_limit=WORKER_TIMEOUT)
 def test_task(self):

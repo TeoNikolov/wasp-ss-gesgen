@@ -7,13 +7,17 @@
 import os
 from pathlib import Path
 import uuid
+from zipfile import ZipFile
+import io
+from io import BytesIO
 
 from fastapi import FastAPI, HTTPException, Response, Form, File, UploadFile
-from starlette.responses import FileResponse
+from starlette.responses import FileResponse, StreamingResponse
 from starlette.staticfiles import StaticFiles
 from typing_extensions import Annotated
 
 from celery import Celery
+import celery.states as states
 
 celery_workers = Celery(
 	"tasks",
@@ -91,6 +95,53 @@ async def generate_bvh(
 			"seed": seed
 		}
 		task = celery_workers.send_task("tasks.generate_bvh", kwargs=task_args)
-		return "BVH generation started."
+		return task.id
 	except Exception:
 		raise HTTPException(status_code = 500, detail="Failed to process audio file.")
+
+@app.get("/job_id/{task_id}")
+def check_job(task_id: str) -> str:
+	res = celery_workers.AsyncResult(task_id)
+	if res.state == states.PENDING:
+		reserved_tasks = celery_workers.control.inspect().reserved()
+		tasks = []
+		if reserved_tasks:
+			tasks_per_worker = reserved_tasks.values()
+			tasks = [item for sublist in tasks_per_worker for item in sublist]
+			found = False
+			for task in tasks:
+				if task["id"] == task_id:
+					found = True
+		result = {"jobs_in_queue": len(tasks)}
+	elif res.state == states.FAILURE:
+		result = str(res.result)
+	elif res.state == states.SUCCESS:
+		result = res.result["public"]
+	else:
+		result = res.result
+	return {"state": res.state, "result": result}
+
+@app.get("/get_files/{task_id}")
+def get_files(task_id: str):
+	if os.environ["SERVER_MODE"] != "1":
+		raise HTTPException(status_code = 405, detail=f"The app must be running in SERVER MODE to use this endpoint.")
+
+	res = celery_workers.AsyncResult(task_id)
+	if res.state != states.SUCCESS:
+		raise HTTPException(status_code = 404, detail=f"Files are not available because the task has not finished.")
+
+	s = BytesIO()
+	sb = None
+	with ZipFile(s, "w") as zf:
+		for filename in res.result["public"]:
+			zf.write("/shared_storage/" + filename, filename)
+		sb = s.getvalue()
+
+	zip_name = "bvh-with-wav.zip"
+	return Response(
+		sb,
+		headers={
+			"Content-Disposition": f"attachment; filename=\"{zip_name}\"",
+		},
+		media_type="application/x-zip-compressed"
+	)

@@ -18,6 +18,26 @@ async function getPoses() {
     }
 }
 
+async function getCheckJob(jobId) {
+    try {
+        const response = await fetch("/job_id/" + jobId);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching job status:', error);
+    }
+}
+
+async function getFiles(jobId) {
+    try {
+        const response = await fetch("/get_files/" + jobId);
+        const data = await response;
+        return data;
+    } catch (error) {
+        console.error('Error fetching files:', error);
+    }
+}
+
 async function postGenerateBVH(form_data) {
     try {
         const response = await fetch(
@@ -25,7 +45,6 @@ async function postGenerateBVH(form_data) {
             {
                 method: 'POST',
                 body: form_data
-                // headers: {'content-type': 'multipart/form-data'}
             },
         );
         const data = await response.json();

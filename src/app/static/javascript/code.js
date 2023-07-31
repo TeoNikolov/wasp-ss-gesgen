@@ -28,3 +28,43 @@ function isNumberKey(event) {
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
+
+const poll = async function (fn, fnCondition, ms) {
+    let result = await fn();
+        while (fnCondition(result)) {
+            await wait(ms);
+            result = await fn();
+        }
+    return result;
+};
+
+const wait = function (ms = 1000) {
+    return new Promise(resolve => {
+        setTimeout(resolve, ms);
+    });
+};
+
+function saveFile(responsePromise) {
+    let filename = 'unknown_filename';
+
+    responsePromise
+    .then((response) => {
+        const CDHeader = response.headers.get("Content-Disposition");
+        filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+        var matches = filenameRegex.exec(CDHeader);
+        if (matches != null && matches[1]) {
+            filename = matches[1].replace(/['"]/g, '');
+        }
+        return response.blob();
+    })
+    .then((blob) => URL.createObjectURL(blob))
+    .then(url => {
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+        a.click();
+        a.remove();  //afterwards we remove the element again
+        URL.revokeObjectURL(url);
+    });
+}

@@ -28,6 +28,7 @@ services:
           - CELERY_BROKER_URL=${CELERY_BROKER_URL}
           - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
           - CELERY_WORKER_TIMEOUT=${CELERY_WORKER_TIMEOUT}
+          - SERVER_MODE=${SERVER_MODE}
         image: wasp-ss2023-gesgen
         volumes:
           - type: volume
@@ -73,6 +74,7 @@ services:
           - INTERNAL_WEB_PORT=${INTERNAL_WEB_PORT}
           - CELERY_BROKER_URL=${CELERY_BROKER_URL}
           - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+          - SERVER_MODE=${SERVER_MODE}
         image: wasp-ss2023-web
         ports:
           - ${PUBLIC_WEB_PORT}:${INTERNAL_WEB_PORT}

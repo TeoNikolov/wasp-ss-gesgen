@@ -30,7 +30,19 @@ function submitFormGesGen(event) {
     event.preventDefault();
     const form_gg = document.getElementById("form-gesgen");
     const data = new FormData(form_gg);
-    postGenerateBVH(data);
+    postGenerateBVH(data)
+        .then((jobId) => {
+            poll(() => {
+                return getCheckJob(jobId);
+            },
+            (pollResult) => {
+                console.log(pollResult);
+                return pollResult["state"] != "SUCCESS";
+            }, 2000)
+            .then((pollResult) => {
+                saveFile(getFiles(jobId))
+            });
+        });
 }
 
 startup();
