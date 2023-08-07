@@ -48,9 +48,16 @@ services:
           - ./src/ZeroEGGS:/app/ZeroEGGS
     visual:
         build:
-            context: ./src/genea_visualizer/celery-queue/
+            context: ./src/genea_visualizer/
             dockerfile: Dockerfile
         image: wasp-ss2023-visual
+        depends_on:
+          - redis
+        environment:
+          - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+          - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+          - CELERY_WORKER_TIMEOUT=${CELERY_WORKER_TIMEOUT}
+          - SERVER_MODE=${SERVER_MODE}
         volumes:
           - type: volume
             source: 'appdata'
@@ -63,7 +70,10 @@ services:
             target: /app/output/
             volume:
                 nocopy: true
-        tty: true
+          - type: volume
+            source: 'temp_storage'
+            target: /shared_storage/
+          - ./src/genea_visualizer:/app/genea_visualizer
     web:
         build:
             context: ./src/app/

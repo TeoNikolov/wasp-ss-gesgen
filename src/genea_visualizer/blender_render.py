@@ -141,7 +141,7 @@ def load_audio(filepath):
         frame_start=0
     )
     
-def render_video(output_dir, picture, video, bvh_fname, render_frame_start, render_frame_length, res_x, res_y):
+def render_video(output_file : Path, picture, video, bvh_fname, render_frame_start, render_frame_length, res_x, res_y):
     bpy.context.scene.render.engine = 'BLENDER_WORKBENCH'
     bpy.context.scene.display.shading.light = 'MATCAP'
     bpy.context.scene.display.render_aa = 'FXAA'
@@ -152,10 +152,10 @@ def render_video(output_dir, picture, video, bvh_fname, render_frame_start, rend
     bpy.context.scene.frame_set(render_frame_start)
     if render_frame_length > 0:
         bpy.context.scene.frame_end = render_frame_start + render_frame_length
-    
+
     if picture:
         bpy.context.scene.render.image_settings.file_format='PNG'
-        bpy.context.scene.render.filepath=os.path.join(output_dir, '{}.png'.format(bvh_fname))
+        bpy.context.scene.render.filepath=str(output_file.with_suffix(".png"))
         bpy.ops.render.render(write_still=True)
         
     if video:
@@ -167,13 +167,13 @@ def render_video(output_dir, picture, video, bvh_fname, render_frame_start, rend
         bpy.context.scene.render.ffmpeg.constant_rate_factor='HIGH'
         bpy.context.scene.render.ffmpeg.audio_codec='MP3'
         bpy.context.scene.render.ffmpeg.gopsize = 30
-        bpy.context.scene.render.filepath=os.path.join(output_dir, '{}_'.format(bvh_fname))
+        bpy.context.scene.render.filepath=str(output_file.with_suffix(".mp4"))
         bpy.ops.render.render(animation=True, write_still=True)
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Some description.", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('-i', '--input', help='Input file name of the BVH to render.', type=Path, required=True)
-    parser.add_argument('-o', '--output_dir', help='Output directory where the rendered video files will be saved to. Will use "<script directory/output/" if not specified.', type=Path)
+    parser.add_argument('-o', '--output', help='Output name (directory + filename without extension) where the rendered video will be saved to.', type=Path)
     parser.add_argument('-s', '--start', help='Which frame to start rendering from.', type=int, default=0)
     parser.add_argument('-r', '--rotate', help='Rotates the character for better positioning in the video frame. Use "cw" for 90-degree clockwise, "ccw" for 90-degree counter-clockwise, "flip" for 180 degree rotation, or leave at "default" for no rotation.', choices=['default', 'cw', 'ccw', 'flip'], type=str, default="default")
     parser.add_argument('-d', '--duration', help='How many consecutive frames to render.', type=int, default=3600)
@@ -209,7 +209,7 @@ def main():
         ARG_RESOLUTION_X = 640
         ARG_RESOLUTION_Y = 480
         ARG_MODE = 'full_body'
-        ARG_OUTPUT_DIR = ARG_BVH_PATHNAME.parents[0]
+        ARG_OUTPUT_FILE_NAME = ARG_BVH_PATHNAME.parents[0]
     else:
         print('[INFO] Script is running from command line.')
         SCRIPT_DIR = Path(os.path.realpath(__file__)).parents[0]
@@ -225,7 +225,7 @@ def main():
         ARG_RESOLUTION_X = args['res_x']
         ARG_RESOLUTION_Y = args['res_y']
         ARG_MODE = args['visualization_mode']
-        ARG_OUTPUT_DIR = args['output_dir'].resolve() if args['output_dir'] else ARG_BVH_PATHNAME.parents[0]
+        ARG_OUTPUT_FILE_NAME = args['output'].resolve() if args['output'] else ARG_BVH_PATHNAME.parents[0]
         
         
     if ARG_MODE not in ["full_body"]:
@@ -251,15 +251,16 @@ def main():
     if ARG_AUDIO_FILE_NAME and not IS_SERVER:
         load_audio(str(ARG_AUDIO_FILE_NAME))
     
-    if not os.path.exists(str(ARG_OUTPUT_DIR)):
-        os.mkdir(str(ARG_OUTPUT_DIR))
-    
+    # output
+    output_file = ARG_OUTPUT_FILE_NAME
+    assert output_file.parent.is_dir(), f"The directory \"{output_file.parent}\"does not exist."
+
     total_frames = bpy.data.objects[BVH_NAME].animation_data.action.frame_range.y
-    render_video(str(ARG_OUTPUT_DIR), ARG_IMAGE, ARG_VIDEO, BVH_NAME, ARG_START_FRAME, min(ARG_DURATION_IN_FRAMES, total_frames), ARG_RESOLUTION_X, ARG_RESOLUTION_Y)
+    render_video(output_file, ARG_IMAGE, ARG_VIDEO, BVH_NAME, ARG_START_FRAME, min(ARG_DURATION_IN_FRAMES, total_frames), ARG_RESOLUTION_X, ARG_RESOLUTION_Y)
 
     end = time.time()
     all_time = end - start
-    print("output_file", str(list(ARG_OUTPUT_DIR.glob("*"))[0]), flush=True)
+    print("output_file", str(output_file), flush=True)
     
 #Code line
 main()
