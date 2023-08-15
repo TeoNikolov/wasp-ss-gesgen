@@ -53,3 +53,19 @@ async function postGenerateBVH(form_data) {
         console.error('Error requesting generation of BVH:', error);
     }
 }
+
+async function postVisualise(form_data) {
+    try {
+        const response = await fetch(
+            '/visualise',
+            {
+                method: 'POST',
+                body: form_data
+            },
+        );
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error visualising BVH + WAV:', error);
+    }
+}

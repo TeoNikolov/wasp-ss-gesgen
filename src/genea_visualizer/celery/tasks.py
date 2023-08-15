@@ -60,11 +60,11 @@ def visualise(self,
     process = call_blender_process(python_script, script_args)
 
     # Debug prints
-    # while True:
-    #      line = process.stdout.readline()
-    #      if not line:
-    #           break
-    #      print(line)
+    while True:
+         line = process.stdout.readline()
+         if not line:
+              break
+        #  print(line)
 
     process.wait()
     print(f"Process finished with code {process.returncode}.")
@@ -73,7 +73,10 @@ def visualise(self,
 
     # These are useful ONLY in SERVER_MODE with "shared_storage"
     task_result = {
-         "public": [output_name + ".mp4"],
-         "internal": [output_path + output_name + ".mp4"]
+         "download": {
+            "location": output_path + output_name + ".mp4",
+            "filename": "video.mp4",
+            "mime_type": "video/mp4"
+         }
     }
     return task_result

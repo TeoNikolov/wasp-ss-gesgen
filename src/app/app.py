@@ -99,6 +99,32 @@ async def generate_bvh(
 	except Exception:
 		raise HTTPException(status_code = 500, detail="Failed to process audio file.")
 
+@app.post("/visualise/", status_code=202)
+async def visualise(
+	audio : UploadFile = File(...),
+	motion : UploadFile = File(...),
+):
+	# save audio to shared storage
+	audio_content = await audio.read()
+	audio_filename = str(uuid.uuid4()) + ".wav"
+	audio_filepath = "/shared_storage/" + audio_filename
+	with open(audio_filepath, "wb") as out_audio_file:
+		out_audio_file.write(audio_content)
+
+	# save motion to shared storage
+	motion_content = await motion.read()
+	motion_filename = str(uuid.uuid4()) + ".bvh"
+	motion_filepath = "/shared_storage/" + motion_filename
+	with open(motion_filepath, "wb") as out_motion_file:
+		out_motion_file.write(motion_content)
+
+	task_args = {
+		"audio_filepath": audio_filepath,
+		"motion_filepath": motion_filepath
+	}
+	task = celery_workers.send_task("tasks.visualise", kwargs=task_args)
+	return task.id
+
 @app.get("/job_id/{task_id}")
 def check_job(task_id: str) -> str:
 	res = celery_workers.AsyncResult(task_id)

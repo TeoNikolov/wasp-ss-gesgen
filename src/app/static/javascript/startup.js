@@ -12,6 +12,8 @@ function startup() {
     // add form listeners
     const form_gg = document.getElementById("form-gesgen");
     form_gg.addEventListener('submit', submitFormGesGen);
+    const form_vis = document.getElementById("form-vis");
+    form_vis.addEventListener('submit', submitFormVis);
 
     // temperature inputs
     var temp_slider = document.getElementById('temp_range');
@@ -54,6 +56,30 @@ function submitFormGesGen(event) {
                     saveFile(getFiles(jobId));
                 }
                 enableFormButton(form_gg);
+            });
+        });
+}
+
+function submitFormVis(event) {
+    event.preventDefault();
+    const form_vis = document.getElementById("form-vis");
+    const data = new FormData(form_vis);
+    disableFormButton(form_vis);
+    postVisualise(data)
+        .then((jobId) => {
+            poll(() => {
+                return getCheckJob(jobId);
+            },
+            (pollResult) => {
+                exitCondition = !(pollResult["state"] == "SUCCESS" || pollResult["state"] == "FAILURE");
+                console.log(pollResult);
+                return exitCondition;
+            }, 2000)
+            .then((pollResult) => {
+                if (pollResult["state"] == "SUCCESS") {
+                    saveFile(getFiles(jobId));
+                }
+                enableFormButton(form_vis);
             });
         });
 }
