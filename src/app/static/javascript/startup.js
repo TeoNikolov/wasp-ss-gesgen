@@ -26,21 +26,34 @@ function startup() {
     seed_numeric.addEventListener('keypress', function(e) {return isNumberKey(e); })
 }
 
+function disableFormButton(form) {
+    form.submit.disabled = true;
+}
+
+function enableFormButton(form) {
+    form.submit.disabled = false;
+}
+
 function submitFormGesGen(event) {
     event.preventDefault();
     const form_gg = document.getElementById("form-gesgen");
     const data = new FormData(form_gg);
+    disableFormButton(form_gg);
     postGenerateBVH(data)
         .then((jobId) => {
             poll(() => {
                 return getCheckJob(jobId);
             },
             (pollResult) => {
+                exitCondition = !(pollResult["state"] == "SUCCESS" || pollResult["state"] == "FAILURE");
                 console.log(pollResult);
-                return pollResult["state"] != "SUCCESS";
+                return exitCondition;
             }, 2000)
             .then((pollResult) => {
-                saveFile(getFiles(jobId))
+                if (pollResult["state"] == "SUCCESS") {
+                    saveFile(getFiles(jobId));
+                }
+                enableFormButton(form_gg);
             });
         });
 }
