@@ -116,7 +116,7 @@ def check_job(task_id: str) -> str:
 	elif res.state == states.FAILURE:
 		result = str(res.result)
 	elif res.state == states.SUCCESS:
-		result = res.result["public"]
+		result = "Task completed successfully!"
 	else:
 		result = res.result
 	return {"state": res.state, "result": result}
@@ -130,18 +130,14 @@ def get_files(task_id: str):
 	if res.state != states.SUCCESS:
 		raise HTTPException(status_code = 404, detail=f"Files are not available because the task has not finished.")
 
-	s = BytesIO()
-	sb = None
-	with ZipFile(s, "w") as zf:
-		for filename in res.result["public"]:
-			zf.write("/shared_storage/" + filename, filename)
-		sb = s.getvalue()
+	location = res.result["download"]["location"]
+	filename = res.result["download"]["filename"]
+	mime_type = res.result["download"]["mime_type"]
 
-	zip_name = "bvh-with-wav.zip"
-	return Response(
-		sb,
+	return FileResponse(
+		path=location,
 		headers={
-			"Content-Disposition": f"attachment; filename=\"{zip_name}\"",
+			"Content-Disposition": f"attachment; filename=\"{filename}\"",
 		},
-		media_type="application/x-zip-compressed"
+		media_type=mime_type
 	)

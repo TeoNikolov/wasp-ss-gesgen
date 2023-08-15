@@ -71,16 +71,10 @@ def generate_bvh(self,
 
     # These are useful ONLY in SERVER_MODE with "shared_storage"
     task_result = {
-         "public": [output_name + ".bvh", output_name + ".wav"],
-         "internal": [output_path + output_name + ".bvh", output_path + output_name + ".wav"]
+         "download": {
+            "location": output_path + output_name + ".bvh",
+            "filename": "motion.bvh",
+            "mime_type": "application/octet-stream"
+         }
     }
     return task_result
-
-@celery_app.task(name="tasks.test", bind=True, hard_time_limit=WORKER_TIMEOUT)
-def test_task(self):
-    for i in range(10):
-        print("PRINT " + str(i))
-        time.sleep(1)
-    print(logger.info(self.request.id))
-    print("DONE!")
-    return 999
