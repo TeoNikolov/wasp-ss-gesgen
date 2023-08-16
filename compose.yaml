@@ -1,20 +1,6 @@
 version: '3.8'
 
 volumes:
-    appdata:        
-        name: 'appdata'
-        driver: local
-        driver_opts:
-            type: none
-            device: './data'
-            o: 'bind'
-    output:
-        name: 'output'
-        driver: local
-        driver_opts:
-            type: none
-            o: 'bind'
-            device: './output'
     temp_storage:
 
 services:
@@ -31,17 +17,8 @@ services:
           - SERVER_MODE=${SERVER_MODE}
         image: wasp-ss2023-gesgen
         volumes:
-          - type: volume
-            source: 'appdata'
-            target: /app/data/
-            read_only: true
-            volume:
-                nocopy: true
-          - type: volume
-            source: 'output'
-            target: /app/output/
-            volume:
-                nocopy: true
+          - './data:/app/data:ro'
+          - './output:/app/output'
           - type: volume
             source: 'temp_storage'
             target: /shared_storage/
@@ -59,17 +36,8 @@ services:
           - CELERY_WORKER_TIMEOUT=${CELERY_WORKER_TIMEOUT}
           - SERVER_MODE=${SERVER_MODE}
         volumes:
-          - type: volume
-            source: 'appdata'
-            target: /app/data/
-            read_only: true
-            volume:
-                nocopy: true
-          - type: volume
-            source: 'output'
-            target: /app/output/
-            volume:
-                nocopy: true
+          - './data:/app/data:ro'
+          - './output:/app/output'
           - type: volume
             source: 'temp_storage'
             target: /shared_storage/
@@ -89,17 +57,8 @@ services:
         ports:
           - ${PUBLIC_WEB_PORT}:${INTERNAL_WEB_PORT}
         volumes:
-          - type: volume
-            source: 'appdata'
-            target: /app/data/
-            read_only: true
-            volume:
-                nocopy: true
-          - type: volume
-            source: 'output'
-            target: /app/output/
-            volume:
-                nocopy: true
+          - './data:/app/data:ro'
+          - './output:/app/output'
           - type: volume
             source: 'temp_storage'
             target: /shared_storage/
