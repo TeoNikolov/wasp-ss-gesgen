@@ -25,3 +25,17 @@ Export Gestures
 docker ps
 docker exec -it <visual container id> bash
 /blender/blender-2.83.0-linux64/blender -b --python export_fbx.py -- -b "/app/output/bvh/test.bvh" -m "/app/genea_visualizer/model/LaForgeMale.fbx" -o "/app/output/fbx/test2.fbx"
+
+======================
+Useful Docker Commands
+======================
+
+- kill all containers : sudo docker kill $(sudo docker ps -q)
+- delete all stopped containers : sudo docker rm $(sudo docker ps -a -q)
+
+==========================
+Setting up Docker on Linux
+==========================
+- sudo apt update
+- sudo apt install net-tools
+- (check open ports) sudo netstat -tulpn | grep LISTEN
