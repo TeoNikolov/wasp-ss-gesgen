@@ -57,6 +57,7 @@ However, a local setup may be useful to you if you wish to learn in-depth about 
 - Make sure that `git` is installed on your machine. On Ubuntu, you can run `sudo apt-get install git-all` to download `git`. On Windows, you can download [Git for Windows](https://git-scm.com/downloads).
 - Make sure to install Docker by refering to [these instructions](https://www.docker.com/products/docker-desktop/). You are encouraged to download the **latest version** to avoid potential issues with deploying the gesture generation system. Run `docker run hello-world` to test your installation; you should see *"Hello from Docker!"* in your terminal.
 - Make sure Docker is running before continuing with the setup. You can test this by running `docker run hello-world`.
+- If you wish to use the command line interface instead of the web app, set `SERVER_MODE` to `0` inside the `.env` file.
 
 ## Build the Docker images
 Build the Docker images by running `docker compose build`. This will build the following images:
