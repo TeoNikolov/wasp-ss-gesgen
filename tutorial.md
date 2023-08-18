@@ -10,7 +10,7 @@ A web-based system has been developed to enable the completion of these tasks. W
 - You want to dive deep into how the system works.
 - You want to modify the functionality of the system (advanced, good in your free time).
 
-Please refer to the "Setup" instructions in the gesture generation repository if you wish to set up the system yourself.
+Please refer to the "Local setup" section in the gesture generation repository if you wish to set up the system yourself.
 
 *Note: If the web server is buggy, you need to set up the Docker solution on your machine and use a command line interface (CLI) inside the corresponding Docker containers. For this purpose, make sure that you change the variable `SERVER_MODE` to `0` inside the `.env` file in the [repository root](https://github.com/TeoNikolov/wasp-ss2023-gesgen/).*
 
