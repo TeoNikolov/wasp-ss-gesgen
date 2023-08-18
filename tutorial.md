@@ -4,18 +4,18 @@ The gesture generation tutorial for the WASP summer school 2023 is composed of 3
 - Previewing the generated motion as a MP4 video
 - Exporting the generated BVH motion as an FBX file format
 
-A web-based system has been developed to enable the completion of these tasks. WASP currently hosts such a web server at *TODO* that you can acess in your browser; this saves you the effort of having to setup the system yourself on your machine. However, you might prefer to setup the system on your machine in some casee:
+A web-based system has been developed to enable the completion of these tasks. WASP currently hosts such a web server at *TODO* that you can access in your browser; this saves you the effort of having to set up the system yourself on your machine. However, you might prefer to set up the system on your machine in some cases:
 - There is an issue connecting to the WASP server.
 - The WASP server has crashed.
 - You want to dive deep into how the system works.
 - You want to modify the functionality of the system (advanced, good in your free time).
 
-Please refer to the "Setup" instructions in the gesture generation repository if you wish to setup the system yourself.
+Please refer to the "Setup" instructions in the gesture generation repository if you wish to set up the system yourself.
 
-*Note: If the web server is buggy, you need to setup the Docker solution on your machine and use a command line interface (CLI) inside the corresponding Docker containers. For this purpose, make sure that you change the variable `SERVER_MODE` to `0` inside the `.env` file in the [repository root](https://github.com/TeoNikolov/wasp-ss2023-gesgen/).*
+*Note: If the web server is buggy, you need to set up the Docker solution on your machine and use a command line interface (CLI) inside the corresponding Docker containers. For this purpose, make sure that you change the variable `SERVER_MODE` to `0` inside the `.env` file in the [repository root](https://github.com/TeoNikolov/wasp-ss2023-gesgen/).*
 
 # Task 1. Generating BVH motion from audio
-The first task is to use the ZeroEGGS AI model to generated gestures from audio. This audio may be either synthetic, your own voice, or any other audio you got from the internet. When completing the task, think about the following:
+The first task is to use the ZeroEGGS AI model to generate gestures from audio. This audio may be either synthetic, your own voice, or any other audio you got from the internet. When completing the task, think about the following:
 - How does changing one parameter affect the generated animation? Make sure to keep the seed fixed.
 - Does changing the seed, while keeping the generation parameters fixed, lead to gestures that are clearly distinguishable from animations generated previously?
 - Do the gestures look good? If not, can the visual quality be improved?
@@ -51,12 +51,12 @@ The `/data/` and `/output/` folders located in the gesture generation repository
     - `-r` : The random seed to use for generation.
     - `-fp` : File containing a pose sample to use as the first pose of the generated animation.
     - `-n` : Name of the output BVH file.
-    - `-t` : Temperature of the model, between `0.0` and `1.0`. A higher value causes the model to generate gesture that are similar to the chosen style; a lower value has the opposite effect.
+    - `-t` : Temperature of the model, between `0.0` and `1.0`. A higher value causes the model to generate gestures that are similar to the chosen style; a lower value has the opposite effect.
 
-When proceding to the next task, run `exit` in your terminal to detach from the Docker container.
+When proceeding to the next task, run `exit` in your terminal to detach from the Docker container.
 
 # Task 2. Previewing the generated motion
-Previewing the generated animations is much more straightforward than generating them. In fact, there is very litle you need to do, particularly with the web-based solution. Keep in mind that generating a video of the gestures is a relatively slow process, so please be patient.
+Previewing the generated animations is much more straightforward than generating them. In fact, there is very little you need to do, particularly with the web-based solution. Keep in mind that generating a video of the gestures is a relatively slow process, so please be patient.
 
 ## Web-based
 1. Ensure you have opened the web page at `localhost:5001`.
@@ -84,7 +84,7 @@ The `/output/` folder located in the gesture generation repository root is mount
 6. The rendered video lacks audio (due to technical constraints). To add audio, run `ffmpeg -i "/app/output/mp4/output_video.mp4" -i "/app/output/bvh/output_motion.wav" -c:v copy -c:a aac -map 0:v:0 -map 1:a:0 -shortest "/app/output/mp4/output_video_audio.mp4"`:
     - `<first -i>` : This is the video stream we want to combine with audio.
     - `<second -i>` : This is the audio stream we want to combine with video. Use the audio file that corresponds to the generated BVH that you rendered the first video for. In our case, ZeroEGGS makes a copy of the audio inside the `/output/bvh/` folder, so we can use that.
-    - `<last param>` : This is the combine video and audio file that will be converted.
+    - `<last param>` : This is the combined video and audio file that will be converted.
     - `<all other params>` : These params are needed for ffmpeg to correctly handle the data streams. These details are very low level and are not crucial for this tutorial. If you are interested in knowing more, you can read the [official ffmpeg documentation](https://ffmpeg.org/ffmpeg.html) and the one in this [ffmpeg Python wrapper](https://github.com/kkroening/ffmpeg-python).
 7. Open the rendered video and preview the results!
 
@@ -104,7 +104,7 @@ The `/output/` folder located in the gesture generation repository root is mount
     - `-b (first occurrence)` : This flag tells Blender to run in "headless" mode without the UI.
     - `--python` : A Python script which Blender will execute when it runs. This contains our custom rendering code.
     - `-b (second occurrence)` : This is the BVH file we want to convert to FBX. Only files generated by ZeroEGGS are compatible.
-    - `-m` : The model we want to apply the animation to. In our case, ZeroEGGS provide their own model for which animations are generated. Do not change this.
+    - `-m` : The model we want to apply the animation to. In our case, ZeroEGGS comes with its own model for which animations are generated. Do not change this.
     - `-o` : The filename of the output FBX file.
 
 # Final notes
@@ -113,7 +113,7 @@ If you finished the tutorial, you are free to continue experimenting or do somet
 - Experiment with the gesture generation parameters
 - Work on systems you used previously during the summer school
 - Work on the student assignment for Thursday
-- Setup the Docker solution locally, if you have not done so already
+- Set up the Docker solution locally, if you have not done so already
 - Browse the code to learn more about how various tools were used to create a functioning web app: `FastAPI`, the `Celery` task queue, `Redis`, `Docker` (`Dockerfile`, `docker compose`), the `GENEA Visualiser`, `HTML`, `CSS`, `Javascript` . Feel free to ask questions!
 - Help other teams out
 - Have a relaxing discussion with ChatGPT about the essence of life and the universe
