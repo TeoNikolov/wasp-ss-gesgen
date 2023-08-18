@@ -1,30 +1,44 @@
 =================
 Generate Gestures
 =================
-# Find the "...gesgen" container
+# Find the "wasp-ss2023-gesgen" container ID
 docker ps
 
 # Bash into the container
-docker exec -it <gesgen container id> bash
-python3.8 ./generate.py -o "/app/data/gesgen_options_v1.json" -s "/app/data/styles/067_Speech_2_x_1_0.bvh" -a "/app/data/audio/s01_067_Speech_2_x_1_0_cut.wav" -p "/app/output/bvh/" -r 1234 -fp "/app/data/start_poses/037_Flirty_1_x_1_0.bvh" -n "test" -t 1.0
+docker exec -it <container ID> bash
+
+# Convert audio to be compatible with ZeroEGGS
+sox "/app/data/audio/sentence01_3.wav" -r 16k -c 1 -b 32 "/app/output/converted_audio.wav"
+
+# Generate gesture with ZeroEGGS
+python3.8 "/app/ZeroEGGS/ZEGGS/generate.py" -o "/app/data/gesgen_options_v1.json" -s "/app/data/styles/Flirty.bvh" -a "/app/output/converted_audio.wav" -p "/app/output/bvh/" -r 1234 -fp "/app/data/start_poses/pose_1.bvh" -n "output_motion" -t 1.0
 
 ==================
 Visualize Gestures
 ==================
-# Find the "...visual" container
+# Find the "wasp-ss2023-visual" container ID
 docker ps
 
 # Bash into the container; we need to run a virtual display or Blender won't render
-docker exec -it <visual container id> xvfb-run -s ":99" -s '-screen 0 1024x700x24 -ac' bash
-/blender/blender-2.83.0-linux64/blender -b --python blender_render.py -- --input "/app/output/bvh/test.bvh" --duration 9999 --video --res_x 640 --res_y 480 -o "/app/output/mp4/"
+docker exec -it <container ID> xvfb-run -s ":99" -s '-screen 0 1024x700x24 -ac' bash
+
+# Render video
+/blender/blender-2.83.0-linux64/blender -b --python "/app/genea_visualizer/blender_render.py" -- --input "/app/output/bvh/output_motion.bvh" --duration 9999 --video --res_x 640 --res_y 480 -o "/app/output/mp4/output_video.mp4"
+
+# Add audio to video
+ffmpeg -i "/app/output/mp4/output_video.mp4" -i "/app/output/bvh/output_motion.wav" -c:v copy -c:a aac -map 0:v:0 -map 1:a:0 -shortest "/app/output/mp4/output_video_audio.mp4"
 
 ===============
 Export Gestures
 ===============
-# Find the "...visual" container
+# Find the "wasp-ss2023-visual" container ID
 docker ps
-docker exec -it <visual container id> bash
-/blender/blender-2.83.0-linux64/blender -b --python export_fbx.py -- -b "/app/output/bvh/test.bvh" -m "/app/genea_visualizer/model/LaForgeMale.fbx" -o "/app/output/fbx/test2.fbx"
+
+# Bash into the container (no display needed)
+docker exec -it <container ID> bash
+
+# Export the FBX
+/blender/blender-2.83.0-linux64/blender -b --python "/app/genea_visualizer/export_fbx.py" -- -b "/app/output/bvh/output_motion.bvh" -m "/app/genea_visualizer/model/LaForgeMale.fbx" -o "/app/output/fbx/output_motion.fbx"
 
 ======================
 Useful Docker Commands
