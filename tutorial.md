@@ -1,18 +1,37 @@
 # Gesture Generation Tutorial
-The gesture generation tutorial for the WASP summer school 2023 is composed of 3 tasks:
+For this tutorial you will be generating gestural animations using an AI model, visualizing the generated animations, and exporting them in a common format. Specifically, you will be completing the following tasks:
 - Generating BVH motion from WAV audio
 - Previewing the generated motion as a MP4 video
 - Exporting the generated BVH motion as an FBX file format
 
-A web-based system has been developed to enable the completion of these tasks. WASP currently hosts such a web server at *TODO* that you can access in your browser; this saves you the effort of having to set up the system yourself on your machine. However, you might prefer to set up the system on your machine in some cases:
-- There is an issue connecting to the WASP server.
-- The WASP server has crashed.
-- You want to dive deep into how the system works.
-- You want to modify the functionality of the system (advanced, good in your free time).
+You can complete the tasks in two main ways: (1) using a web server, or (2) using the command line interface (CLI) inside Docker containers.
 
-Please refer to the "Local setup" section in the gesture generation repository if you wish to set up the system yourself.
+## Web server
+A web server is provided to spare you the hurdles of setting up all the necessary libraries and dependencies yourself. WASP hosts web servers at the following web addresses that can be accessed from your browser:
+- Production server (recommended) : `http://129.192.81.237/`
+- Development server (backup) : `http://129.192.83.172/`
 
-*Note: If the web server is buggy, you need to set up the Docker solution on your machine and use a command line interface (CLI) inside the corresponding Docker containers. For this purpose, make sure that you change the variable `SERVER_MODE` to `0` inside the `.env` file in the [repository root](https://github.com/TeoNikolov/wasp-ss2023-gesgen/).*
+In some cases you might prefer to set up the server on your machine:
+- There is an issue connecting to the WASP servers.
+- The WASP servers have crashed.
+- You want to dive deep into the technicalities of the system.
+- You want to modify the functionality of the system (good for learning in your spare time).
+
+In this case, you need to follow the instructions under "Local setup" in the [gesgen repository](https://github.com/TeoNikolov/wasp-ss2023-gesgen/). When set up, you can access the local server at `http://localhost/` .
+
+*Note: The development server can be used in case the production server fails.*
+
+*Note: The development server will be used to test any changes to the system during the summer school. As a result, it may go up and down at any time. Use it at your own risk!*
+
+## Docker CLI
+If you prefer to get your hands dirty and write commands in the command line interface, you must first set up the Docker solution (with the web server) on your machine. Follow the instructions under "Local setup" in the [gesgen repository](https://github.com/TeoNikolov/wasp-ss2023-gesgen/).
+**You may need admin rights when using this approach!**
+
+The task descriptions further below contain instructions on which commands to call and when. This is the overall workflow you will be going through when using the CLI inside Docker:
+- You run `docker ps` to get a list of container IDs
+- You access the container of choice by running `docker exec -it <container ID> bash`
+- You run commands inside the container
+- You exit the container when finished by running `exit`
 
 # Task 1. Generating BVH motion from audio
 The first task is to use the ZeroEGGS AI model to generate gestures from audio. This audio may be either synthetic, your own voice, or any other audio you got from the internet. When completing the task, think about the following:
@@ -21,8 +40,8 @@ The first task is to use the ZeroEGGS AI model to generate gestures from audio. 
 - Do the gestures look good? If not, can the visual quality be improved?
 - Do the gestures match the speech temporally?
 
-## Web-based
-1. Open the web page at `localhost:5001`.
+## Web server
+1. Open the server web page.
 2. Click on the file input button after "Audio (WAV)" and pick a WAV audio file for which you want to generate an animation with gestures.
 3. Choose a starting pose from the list after "Choose a starting pose". The corresponding pose will be used as the first frame of your generated animation.
 4. Pick a style for your animation from the list after "Choose a style". This will act as a guide for the generated animations.
@@ -58,12 +77,12 @@ When proceeding to the next task, run `exit` in your terminal to detach from the
 # Task 2. Previewing the generated motion
 Previewing the generated animations is much more straightforward than generating them. In fact, there is very little you need to do, particularly with the web-based solution. Keep in mind that generating a video of the gestures is a relatively slow process, so please be patient.
 
-## Web-based
-1. Ensure you have opened the web page at `localhost:5001`.
+## Web server
+1. Open the server web page.
 2. Click on the file input button after "Motion (BVH)" and pick the generated BVH motion file.
 3. Click on the file input button after "Audio (WAV)" and pick the WAV audio file that matches the generated BVH file you want to visualise.
 4. Press "Download (MP4)" when you are satisfied with your choices. *Warning: There is a bug that may require you to press the button multiple times until the generation starts.*
-5. Wait for generation to finish; this process can be rather slow. You will be shown a "download file" dialog to save the generated MP4 file when finished.
+5. Wait for the process to complete; this can take a while. You will be shown a "download file" dialog to save the generated MP4 file when finished.
 
 ## Docker CLI
 The `/output/` folder located in the gesture generation repository root is mounted inside Docker; you can add, remove, and access files directly from your file system. It is recommended to use this folder when completing this task, as it makes it easy to view the generated videos inside `/output/mp4/`.
@@ -80,7 +99,7 @@ The `/output/` folder located in the gesture generation repository root is mount
     - `--res_x` : The horizontal resolution to render the video at. A higher value will lead to slower rendering, but higher quality.
     - `--res_y` : The vertical resolution to render the video at. A higher value will lead to slower rendering, but higher quality.
     - `-o` : The directory in which the file will be output to. Currently, the output filename is the same as the input file with the extension set to `.mp4`.
-5. Wait for the video to render - this can take a while depending on the animation duration.
+5. Wait for the process to complete; this can take a while depending on the animation duration.
 6. The rendered video lacks audio (due to technical constraints). To add audio, run `ffmpeg -i "/app/output/mp4/output_video.mp4" -i "/app/output/bvh/output_motion.wav" -c:v copy -c:a aac -map 0:v:0 -map 1:a:0 -shortest "/app/output/mp4/output_video_audio.mp4"`:
     - `<first -i>` : This is the video stream we want to combine with audio.
     - `<second -i>` : This is the audio stream we want to combine with video. Use the audio file that corresponds to the generated BVH that you rendered the first video for. In our case, ZeroEGGS makes a copy of the audio inside the `/output/bvh/` folder, so we can use that.
@@ -91,8 +110,11 @@ The `/output/` folder located in the gesture generation repository root is mount
 You do not need to write `exit` in the terminal. The next task asks you to enter the same container.
 
 # Task 3. Export the generated motion as FBX
-## Web-based
-*TODO*
+## Web server
+1. Open the server web page.
+2. Click on the file input button after "Motion (BVH)" and pick the generated BVH motion file.
+3. Press "Download (FBX)" when you are satisfied with your choice.
+4. Wait for the process to complete; this can take a while. You will be shown a "download file" dialog to save the generated FBX file when finished.
 
 ## Docker CLI
 The `/output/` folder located in the gesture generation repository root is mounted inside Docker; you can add, remove, and access files directly from your file system. It is recommended to use this folder when completing this task, as it makes it easy to access the generated FBX file inside `/output/fbx/`.
@@ -115,6 +137,7 @@ If you finished the tutorial, you are free to continue experimenting or do somet
 - Work on the student assignment for Thursday
 - Set up the Docker solution locally, if you have not done so already
 - Browse the code to learn more about how various tools were used to create a functioning web app: `FastAPI`, the `Celery` task queue, `Redis`, `Docker` (`Dockerfile`, `docker compose`), the `GENEA Visualiser`, `HTML`, `CSS`, `Javascript` . Feel free to ask questions!
+- Install Blender on your computer and inspect the downloaded BVH and FBX files
 - Help other teams out
 - Have a relaxing discussion with ChatGPT about the essence of life and the universe
 

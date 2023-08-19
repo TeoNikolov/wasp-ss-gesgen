@@ -50,8 +50,6 @@ Below are instructions on how to set up the gesture generation system locally on
 This is not required as WASP already hosts a web server that you can use.
 However, a local setup may be useful to you if you wish to learn in-depth about how the system works and if you wish to modify or add any (source) files. This will also be useful in the potential scenario that the WASP server crashes or if there are networking-related issues between your machine and the WASP server.
 
-**You can skip this section if you prefer to only use the WASP server.**
-
 ## Prerequisites
 - Make sure you have cloned this repository on your machine by running `git clone https://github.com/TeoNikolov/wasp-ss2023-gesgen/`.
 - Make sure that `git` is installed on your machine. On Ubuntu, you can run `sudo apt-get install git-all` to download `git`. On Windows, you can download [Git for Windows](https://git-scm.com/downloads).
