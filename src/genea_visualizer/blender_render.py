@@ -141,13 +141,19 @@ def load_audio(filepath):
         frame_start=0
     )
     
-def render_video(output_file : Path, picture, video, bvh_fname, render_frame_start, render_frame_length, res_x, res_y):
+def render_video(output_file : Path, picture, video, bvh_fname, render_frame_start, render_frame_length, res_x, res_y, fr_src, fr_tgt):
+    framerate_factor = fr_tgt / fr_src
+    render_frame_start = int(render_frame_start * framerate_factor)
+    render_frame_length = int(render_frame_length * framerate_factor)
+
     bpy.context.scene.render.engine = 'BLENDER_WORKBENCH'
     bpy.context.scene.display.shading.light = 'MATCAP'
     bpy.context.scene.display.render_aa = 'FXAA'
     bpy.context.scene.render.resolution_x=int(res_x)
     bpy.context.scene.render.resolution_y=int(res_y)
-    bpy.context.scene.render.fps = 60
+    bpy.context.scene.render.fps = fr_tgt
+    bpy.context.scene.render.frame_map_old = fr_src
+    bpy.context.scene.render.frame_map_new = fr_tgt
     bpy.context.scene.frame_start = render_frame_start
     bpy.context.scene.frame_set(render_frame_start)
     if render_frame_length > 0:
@@ -256,7 +262,9 @@ def main():
     assert output_file.parent.is_dir(), f"The directory \"{output_file.parent}\"does not exist."
 
     total_frames = bpy.data.objects[BVH_NAME].animation_data.action.frame_range.y
-    render_video(output_file, ARG_IMAGE, ARG_VIDEO, BVH_NAME, ARG_START_FRAME, min(ARG_DURATION_IN_FRAMES, total_frames), ARG_RESOLUTION_X, ARG_RESOLUTION_Y)
+    framerate_src = 60
+    framerate_target = 24
+    render_video(output_file, ARG_IMAGE, ARG_VIDEO, BVH_NAME, ARG_START_FRAME, min(ARG_DURATION_IN_FRAMES, total_frames), ARG_RESOLUTION_X, ARG_RESOLUTION_Y, framerate_src, framerate_target)
 
     end = time.time()
     all_time = end - start
