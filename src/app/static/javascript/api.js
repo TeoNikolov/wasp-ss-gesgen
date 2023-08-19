@@ -1,6 +1,6 @@
 async function getStyles() {
     try {
-        const response = await fetch('/styles');
+        const response = await fetch('/styles/');
         const data = await response.json();
         return data;
     } catch (error) {
@@ -10,7 +10,7 @@ async function getStyles() {
 
 async function getPoses() {
     try {
-        const response = await fetch('/poses');
+        const response = await fetch('/poses/');
         const data = await response.json();
         return data;
     } catch (error) {

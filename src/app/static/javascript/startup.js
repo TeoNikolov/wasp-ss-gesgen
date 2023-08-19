@@ -110,5 +110,3 @@ function submitFormFBX(event) {
             });
         });
 }
-
-startup();
