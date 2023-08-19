@@ -1,6 +1,7 @@
 function populateStyleSelector(styles) {
     const selectElement = document.getElementById('style-selector');
     selectElement.innerHTML = '';
+    styles.sort();
     styles.forEach(style => {
         const option = document.createElement('option');
         option.text = style;
@@ -11,6 +12,7 @@ function populateStyleSelector(styles) {
 function populatePoseSelector(poses) {
     const selectElement = document.getElementById('pose-selector');
     selectElement.innerHTML = '';
+    poses.sort();
     poses.forEach(style => {
         const option = document.createElement('option');
         option.text = style;
