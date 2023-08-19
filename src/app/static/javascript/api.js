@@ -66,6 +66,22 @@ async function postVisualise(form_data) {
         const data = await response.json();
         return data;
     } catch (error) {
-        console.error('Error visualising BVH + WAV:', error);
+        console.error('Error visualising BVH and WAV:', error);
+    }
+}
+
+async function postExportFBX(form_data) {
+    try {
+        const response = await fetch(
+            '/export_fbx',
+            {
+                method: 'POST',
+                body: form_data
+            },
+        );
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error exporting FBX:', error);
     }
 }

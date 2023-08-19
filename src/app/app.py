@@ -125,6 +125,23 @@ async def visualise(
 	task = celery_workers.send_task("visual.tasks.visualise", kwargs=task_args, queue="q_visual")
 	return task.id
 
+@app.post("/export_fbx/", status_code=202)
+async def export_fbx(
+	motion : UploadFile = File(...),
+):
+	# save motion to shared storage
+	motion_content = await motion.read()
+	motion_filename = str(uuid.uuid4()) + ".bvh"
+	motion_filepath = "/shared_storage/" + motion_filename
+	with open(motion_filepath, "wb") as out_motion_file:
+		out_motion_file.write(motion_content)
+
+	task_args = {
+		"motion_filepath": motion_filepath
+	}
+	task = celery_workers.send_task("visual.tasks.export_fbx", kwargs=task_args, queue="q_visual")
+	return task.id
+
 @app.get("/job_id/{task_id}")
 def check_job(task_id: str) -> str:
 	res = celery_workers.AsyncResult(task_id)

@@ -93,12 +93,53 @@ def visualise(self,
             print("FFMPEG ERROR")
             raise TaskFailure(ffmpeg_result[0].decode("utf-8"))
 
-    # These are useful ONLY in SERVER_MODE with "shared_storage"
     task_result = {
          "download": {
             "location": video_filepath,
             "filename": "video.mp4",
             "mime_type": "video/mp4"
+         }
+    }
+    return task_result
+
+@celery_app.task(name="visual.tasks.export_fbx", bind=True, hard_time_limit=WORKER_TIMEOUT)
+def export_fbx(self,
+              motion_filepath : str
+              ):
+
+    if os.environ["SERVER_MODE"] == "1":
+        output_path = "/shared_storage/"
+    else:
+        output_path = "/app/output/fbx/"
+    output_name = str(Path(motion_filepath).stem)
+    output_file = output_path + output_name + ".fbx"
+
+    python_script = "/app/genea_visualizer/export_fbx.py"
+    script_args = [
+         "-b", motion_filepath,
+         "-m", "/app/genea_visualizer/model/LaForgeMale.fbx",
+         "-o", output_file
+    ]
+    print(f"Calling Blender + {python_script} with args:\n{script_args}", sep="\n")
+    process = call_blender_process(python_script, script_args)
+
+    # Without this, the Blender process will not exit properly
+    while True:
+         line = process.stdout.readline()
+         if not line:
+              break
+        #  print(line)
+
+    process.wait()
+    print(f"Blender process finished with code {process.returncode}.")
+    if process.returncode != 0:
+        raise TaskFailure(process.stderr.read().decode("utf-8"))
+
+    task_result = {
+         "download": {
+            "location": output_file,
+            "filename": "motion.fbx",
+            "mime_type": "application/octet-stream"
          }
     }
     return task_result
