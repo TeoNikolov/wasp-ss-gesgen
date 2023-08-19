@@ -10,7 +10,7 @@ from celery.utils.log import get_task_logger
 WORKER_TIMEOUT = int(os.environ["CELERY_WORKER_TIMEOUT"])
 logger = get_task_logger(__name__)
 
-celery_app = Celery("tasks")
+celery_app = Celery("gesgen")
 default_config = "celeryconfig"
 celery_app.config_from_object(default_config)
 
@@ -28,7 +28,7 @@ def call_python_process(python_script, script_args):
     )
     return process
 
-@celery_app.task(name="tasks.generate_bvh", bind=True, hard_time_limit=WORKER_TIMEOUT)
+@celery_app.task(name="gesgen.tasks.generate_bvh", bind=True, hard_time_limit=WORKER_TIMEOUT)
 def generate_bvh(self,
                  style : str,
                  pose : str,

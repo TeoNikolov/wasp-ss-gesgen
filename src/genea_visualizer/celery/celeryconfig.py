@@ -3,3 +3,4 @@
 #          For example: broker_url, result_backend
 
 broker_connection_retry_on_startup = True
+task_create_missing_queues = True

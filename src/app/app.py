@@ -94,7 +94,7 @@ async def generate_bvh(
 			"temperature": temperature,
 			"seed": seed
 		}
-		task = celery_workers.send_task("tasks.generate_bvh", kwargs=task_args)
+		task = celery_workers.send_task("gesgen.tasks.generate_bvh", kwargs=task_args, queue="q_gesgen")
 		return task.id
 	except Exception:
 		raise HTTPException(status_code = 500, detail="Failed to process audio file.")
@@ -122,7 +122,7 @@ async def visualise(
 		"audio_filepath": audio_filepath,
 		"motion_filepath": motion_filepath
 	}
-	task = celery_workers.send_task("tasks.visualise", kwargs=task_args)
+	task = celery_workers.send_task("visual.tasks.visualise", kwargs=task_args, queue="q_visual")
 	return task.id
 
 @app.get("/job_id/{task_id}")

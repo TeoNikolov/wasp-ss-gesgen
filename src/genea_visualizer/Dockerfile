@@ -13,4 +13,4 @@ RUN pip3 install -r requirements.txt
 
 COPY . /app/genea_visualizer
 WORKDIR /app/genea_visualizer/celery
-ENTRYPOINT celery -A tasks worker --concurrency 1 --loglevel=info
+ENTRYPOINT celery -A tasks worker --concurrency 1 --loglevel=info -Q q_visual

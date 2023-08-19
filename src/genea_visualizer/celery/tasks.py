@@ -15,7 +15,7 @@ Display().start()
 WORKER_TIMEOUT = int(os.environ["CELERY_WORKER_TIMEOUT"])
 logger = get_task_logger(__name__)
 
-celery_app = Celery("tasks")
+celery_app = Celery("visual")
 default_config = "celeryconfig"
 celery_app.config_from_object(default_config)
 
@@ -35,7 +35,7 @@ def call_blender_process(python_script, script_args):
     )
     return process
 
-@celery_app.task(name="tasks.visualise", bind=True, hard_time_limit=WORKER_TIMEOUT)
+@celery_app.task(name="visual.tasks.visualise", bind=True, hard_time_limit=WORKER_TIMEOUT)
 def visualise(self,
               audio_filepath : str,
               motion_filepath : str
