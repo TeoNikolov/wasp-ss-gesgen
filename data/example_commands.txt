@@ -47,9 +47,20 @@ Useful Docker Commands
 - kill all containers : sudo docker kill $(sudo docker ps -q)
 - delete all stopped containers : sudo docker rm $(sudo docker ps -a -q)
 
+Requires netstat
+- sudo apt update
+- sudo apt install net-tools
+- sudo netstat -tulpn | grep LISTEN
+
 ==========================
 Setting up Docker on Linux
 ==========================
-- sudo apt update
-- sudo apt install net-tools
-- (check open ports) sudo netstat -tulpn | grep LISTEN
+
+Clone Git repo
+- git clone https://github.com/TeoNikolov/wasp-ss2023-gesgen/
+
+Add key
+- sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys <KEY_ID>
+
+Install Docker
+- https://docs.docker.com/engine/install/ubuntu/
