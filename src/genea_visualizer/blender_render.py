@@ -167,7 +167,7 @@ def render_video(output_file : Path, picture, video, bvh_fname, render_frame_sta
         bpy.context.scene.render.ffmpeg.constant_rate_factor='HIGH'
         bpy.context.scene.render.ffmpeg.audio_codec='MP3'
         bpy.context.scene.render.ffmpeg.gopsize = 30
-        bpy.context.scene.render.filepath=str(output_file.with_suffix(".mp4"))
+        bpy.context.scene.render.filepath=str(output_file.parent / (output_file.stem + ".mp4"))
         bpy.ops.render.render(animation=True, write_still=True)
 
 def parse_args():

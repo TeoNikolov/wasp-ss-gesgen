@@ -4,6 +4,8 @@ import subprocess
 from pprint import pprint
 from pathlib import Path
 
+import ffmpeg
+
 from pyvirtualdisplay import Display
 
 from celery import Celery
@@ -35,6 +37,18 @@ def call_blender_process(python_script, script_args):
     )
     return process
 
+def call_ffmpeg_process(video_file, audio_file, output_file):
+    if ".mp4" not in video_file:
+        raise TaskFailure("Only MP4 video stream is currently supported!")
+    if ".wav" not in audio_file:
+        raise TaskFailure("Only WAV audio stream is currently supported!")
+
+    # FFMPEG CMD ARGS --> ["ffmpeg", "-i", video_file, "-i", audio_file, "-c:v", "copy", "-c:a", "aac", "-map", "0:v:0", "-map", "1:a:0", "-shortest", output_file]
+    v_stream = ffmpeg.input(video_file)['v']
+    a_stream = ffmpeg.input(audio_file)['a']
+    output_ffmpeg = ffmpeg.output(v_stream, a_stream, output_file, vcodec='copy', acodec='aac', **{'shortest': None, 'y': None})
+    return ffmpeg.run(output_ffmpeg, capture_stdout=True, capture_stderr=True)
+
 @celery_app.task(name="visual.tasks.visualise", bind=True, hard_time_limit=WORKER_TIMEOUT)
 def visualise(self,
               audio_filepath : str,
@@ -45,8 +59,9 @@ def visualise(self,
         output_path = "/shared_storage/"
     else:
         output_path = "/app/output/mp4/"
-    output_name = str(Path(motion_filepath).stem)
+    output_name_no_extension = str(Path(motion_filepath).stem)
 
+    blender_output_filepath = output_path + output_name_no_extension + "_blender.mp4"
     python_script = "/app/genea_visualizer/blender_render.py"
     script_args = [
          "--input", motion_filepath,
@@ -54,12 +69,12 @@ def visualise(self,
          "--video",
          "--res_x", "640",
          "--res_y", "480",
-         "-o", output_path + output_name
+         "-o", blender_output_filepath
     ]
     print(f"Calling Blender + {python_script} with args:\n{script_args}", sep="\n")
     process = call_blender_process(python_script, script_args)
 
-    # Debug prints
+    # Without this, the Blender process will not exit properly
     while True:
          line = process.stdout.readline()
          if not line:
@@ -67,14 +82,21 @@ def visualise(self,
         #  print(line)
 
     process.wait()
-    print(f"Process finished with code {process.returncode}.")
+    print(f"Blender process finished with code {process.returncode}.")
     if process.returncode != 0:
         raise TaskFailure(process.stderr.read().decode("utf-8"))
+
+    video_filepath = output_path + output_name_no_extension + ".mp4"
+    ffmpeg_result = call_ffmpeg_process(blender_output_filepath, audio_filepath, video_filepath)
+    print(f"FFMPEG process finished.")
+    if ffmpeg_result[0] != b'':
+            print("FFMPEG ERROR")
+            raise TaskFailure(ffmpeg_result[0].decode("utf-8"))
 
     # These are useful ONLY in SERVER_MODE with "shared_storage"
     task_result = {
          "download": {
-            "location": output_path + output_name + ".mp4",
+            "location": video_filepath,
             "filename": "video.mp4",
             "mime_type": "video/mp4"
          }
