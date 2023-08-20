@@ -1,8 +1,3 @@
-# wasp-ss2023-gesgen
-Repository containing code for the gesture generation part of the WASP Summer School 2023 student assignment.
-
-**Disclaimer** The repository is WIP and may not function fully. The README is currently unavailable.
-
 # Introduction
 This repository contains various modules and code needed for completing the "Gesture Generation" tutorial for the WASP Summer School 2023. Later, the students will also use what they have learned here to generate gestures as part of a final student assignment; these gestures will be visualised in the [Norrköping Visualisation Center](https://visualiseringscenter.se/en).
 
@@ -12,6 +7,12 @@ The solution is composed of multiple modules, each of which has its own responsi
 - A *web app* module provides access to the two systems above via a web page you can access in your browser.
 
 *TODO: A low-level description of the various modules such as libraries or variables is currently missing. This information will not be prioritized DURING the summer school; you can check if the repo is updated sometime in September. However, you can still see various commands actively used by the system in the [gesture generation tutorial](https://github.com/TeoNikolov/wasp-ss2023-gesgen/blob/main/tutorial.md).*
+
+***Warning**: The server has not been tested on ARM-based CPU architectures (e.g. Mac with M1 chip). It may not run on those systems.*
+
+***Warning**: The server has only been tested in Windows and Linux (Ubuntu). The system may not function correctnyl on other OSes like macOS.*
+
+***Warning**: The web page has been tested only on Chrome and Firefox. It may not look properly / function correctly on other browsers like Opera or Safari.*
 
 # Local setup
 Below are instructions on how to set up the gesture generation system locally on your machine.
