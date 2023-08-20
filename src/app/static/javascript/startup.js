@@ -81,7 +81,6 @@ function submitFormVis(event) {
                 if (pollResult["state"] == "SUCCESS") {
                     saveFile(getFiles(jobId));
                 }
-                // Tell user to TRY AGAIN ?
                 enableFormButton(form_vis);
             });
         });
