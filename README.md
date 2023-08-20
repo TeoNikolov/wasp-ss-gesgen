@@ -11,39 +11,7 @@ The solution is composed of multiple modules, each of which has its own responsi
 - A *visualisation* module which visualises gesture data in the form of a video. It also allows the export of gesture data to FBX.
 - A *web app* module provides access to the two systems above via a web page you can access in your browser.
 
-More detailed information is given below.
-
-## Gesture generation module
-The gesture generation model lets you generate motion data in Biovision Hierarchy (BVH) format from raw audio in WAV format.
-
-*TODO*
-
-You can tweak the generated motion using various controls:
-- motion style
-- starting pose
-- temperature
-- seed
-
-*END OF TODO*
-
-## Visualisation module
-The visualisation module lets you preview your generated BVH files as a MP4 video that includes WAV audio. For this, we have leveraged the [GENEA Visualiser](https://github.com/TeoNikolov/genea_visualizer) which was developed for the [GENEA Challenge](https://genea-workshop.github.io/2023/challenge/) that uses Blender.
-
-*TODO* Below is incomplete
-
-The visualisation module also lets you export the BVH motion data to FBX file format. This format is widely adopted by 3D software and is needed for use with Unreal Engine, which is needed by the WASP summer school to visualise...TODO
-
-*TODO* Explain about blender? ffmpeg?
-
-## Web app module
-*TODO* Explain how it all works with celery and FASTAPI
-
-A web server serves a web page that can be accessed from a browser. This is a convenient way to access the above-mentioned systems without having to tinker with the command line.
-
-## Docker compose setup
-*TODO* Too short? Maybe something more interesting to say here?
-
-Docker is used to encapsulate the above-mentioned systems so that you do not have to setup their environments yourself (which can be quite cumbersome).
+*TODO: A low-level description of the various modules such as libraries or variables is currently missing. This information will not be prioritized DURING the summer school; you can check if the repo is updated sometime in September. However, you can still see various commands actively used by the system in the [gesture generation tutorial](https://github.com/TeoNikolov/wasp-ss2023-gesgen/blob/main/tutorial.md).*
 
 # Local setup
 Below are instructions on how to set up the gesture generation system locally on your machine.
@@ -90,7 +58,9 @@ This repo is licensed under the *CC BY-NC-SA 4.0* license. You can find an overv
 **Disclaimer:** The license in this repo does not apply to the ZeroEGGS system; it has [its own license](https://github.com/ubisoft/ubisoft-laforge-ZeroEGGS/blob/main/License.md). Please contact its authors in case you have any questions.
 
 # Attribution
-This repository utilizes Ubisoft La Forge's [ZeroEGGS](https://arxiv.org/abs/2209.07556) gesture generation AI model. You are encouraged to browse around their [repository](https://github.com/ubisoft/ubisoft-laforge-ZeroEGGS/) and to contact the authors if you have any questions about it!
+This repository utilizes Ubisoft La Forge's [ZeroEGGS](https://arxiv.org/abs/2209.07556) gesture generation AI model. We are very thankful that they let us use their model for the summer school!
+
+You are encouraged to browse the [ZeroEGGS repo](https://github.com/ubisoft/ubisoft-laforge-ZeroEGGS/) and to contact the authors if you have any questions about the model or using it for your own projects!
 
 # Contact
 If you have any questions, feel free to contact these folks via email:
