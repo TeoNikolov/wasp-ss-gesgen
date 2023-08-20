@@ -15,6 +15,7 @@ services:
           - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
           - CELERY_WORKER_TIMEOUT=${CELERY_WORKER_TIMEOUT}
           - SERVER_MODE=${SERVER_MODE}
+          - WORKER_COUNT_GESGEN=${WORKER_COUNT_GESGEN}
         image: wasp-ss2023-gesgen
         volumes:
           - './data:/app/data:ro'
@@ -35,6 +36,7 @@ services:
           - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
           - CELERY_WORKER_TIMEOUT=${CELERY_WORKER_TIMEOUT}
           - SERVER_MODE=${SERVER_MODE}
+          - WORKER_COUNT_VISUAL=${WORKER_COUNT_VISUAL}
         volumes:
           - './data:/app/data:ro'
           - './output:/app/output'

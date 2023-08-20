@@ -34,4 +34,4 @@ RUN python3.8 -m pip install celery[redis]==5.3.1
 
 # run
 WORKDIR /app/ZeroEGGS/celery/
-ENTRYPOINT celery -A tasks worker --concurrency 1 --loglevel=info -Q q_gesgen
+ENTRYPOINT celery -A tasks worker --concurrency ${WORKER_COUNT_GESGEN} --loglevel=info -Q q_gesgen
