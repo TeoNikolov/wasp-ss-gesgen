@@ -45,7 +45,7 @@ async def get_styles(response: Response):
 	return bvh_files
 
 @app.get("/poses/")
-async def get_styles(response: Response):
+async def get_poses(response: Response):
 	search_path = Path("/app/data/start_poses/")
 	if not search_path.is_dir():
 		raise HTTPException(status_code = 404, detail="No poses found.")
