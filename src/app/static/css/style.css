@@ -1,19 +1,33 @@
-html, body{
+html {
     height: 100%;
 }
 
 body {
     text-align: center;
-}
-
-h2 {
-    margin-top: 2em;
+    height: 100%;
+    margin: 0;
 }
 
 form {
-    border: 2px solid lightgray;
+    background-color: #EEEEEE;
+    border: 2px solid #CCCCCC;
     display: inline-block;
     padding: 1em;
+    margin-bottom: 2em;
+}
+
+#title-div {
+    background-color: #102e4e;
+    color: white;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 2em;
+    margin: 0;
+    margin-bottom: 3em;
+}
+
+h1 {
+    margin: 0;
 }
 
 input:invalid {
@@ -23,12 +37,22 @@ input:invalid {
 }
 
 input[type=submit] {
-    background-color: #AABBFF;
+    background-color: #102e4e; /* #339cff */
     border-width: 2px;
-    border-color: darkgray;
+    border-color: #102e4e; /* #339cff */
     border-style: solid;
-    width: 8em;
+    width: 10em;
     height: 3em;
+    filter: drop-shadow(4px 4px 2px #102e4e88); /* #0069cc55 */
+    color: white;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+input[type=submit]:disabled {
+    background-color: #777777;
+    border-color: #777777;
+    filter: drop-shadow(4px 4px 2px #77777755);
 }
 
 #temp_numeric {

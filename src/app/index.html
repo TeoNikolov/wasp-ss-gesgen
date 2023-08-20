@@ -6,7 +6,7 @@ This file is licensed under the MIT license. See LICENSE.txt for details.
 -->
 
 <head>
-    <link rel="icon" href="data:,">
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
     <meta charset="utf-8">
     <title>WASP-SS2023-GesGen</title>
     <meta name="description" content="WASP Summer School 2023 gesture generation playground.">
@@ -19,8 +19,9 @@ This file is licensed under the MIT license. See LICENSE.txt for details.
 </head>
 
 <body data-theme="a" onload="startup();">
-    <h1>WASP Summer School 2023<br>Gesture Generation Playground</h1>
-    <hr>
+    <div id="title-div">
+        <h1>WASP Summer School 2023<br>Gesture Generation</h1>
+    </div>
 
     <h2>Step 1. Motion Generation</h2>
     <form id="form-gesgen">
@@ -73,6 +74,10 @@ This file is licensed under the MIT license. See LICENSE.txt for details.
         <br>
         <input type="submit" name="submit" value="Download (FBX)" />
     </form>
+
+    <br>
+    <hr>
+    <a href="https://wasp-sweden.org/" target="_blank"><img src="/static/images/wasp_logo.png" alt="WASP logo" style="max-width: 32em;"></img></a>
   <!-- build:js:generic startup.min.js -->
   <!-- <script src="startup.js"></script> -->
   <!-- /build -->
