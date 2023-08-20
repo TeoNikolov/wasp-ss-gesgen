@@ -71,37 +71,8 @@ The `-d` flag deploys the containers in *detached mode* so that the terminal rem
 
 You should be able to open a web page at `localhost:5001` if all containers started without errors. If the web page does not load, then most likely the `wasp-ss2023-web` container is not running or has crashed, or that your firewall is blocking port `5001`.
 
-# Workflows
-There are three major workflows when it comes to using the gesture generation system:
-- Generating motion data from audio
-- Visualising the generated motion data
-- Exporting the motion data to FBX for use in other software
-
-Steps are provided for the following use cases:
-1. Using the WASP web server
-2. Using a web server that you have hosted
-3. Using the command line interface directly inside the Docker containers
-
-## Generate motion data from audio
-*TODO*
-
-Using CLI.
-
-Using the web server.
-
-## Visualise motion data
-*TODO*
-
-Using CLI.
-
-Using the web server.
-
-## Export motion data to FBX
-*TODO*
-
-Using CLI.
-
-Using the web server.
+# How to use
+You can either use the web server that is deployed OR you can use a command line interface (CLI) that attaches to the various Docker containers. A complete description of the workflow can be found [here](https://github.com/TeoNikolov/wasp-ss2023-gesgen/blob/main/tutorial.md).
 
 # Folders and Files
 *TODO*
@@ -114,7 +85,9 @@ Folders are *italicized*; files are not.
     - compose.yaml - 
 
 # License
-*TODO*
+This repo is licensed under the *CC BY-NC-SA 4.0* license. You can find an overview of the license [here](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+
+**Disclaimer:** The license in this repo does not apply to the ZeroEGGS system; it has [its own license](https://github.com/ubisoft/ubisoft-laforge-ZeroEGGS/blob/main/License.md). Please contact its authors in case you have any questions.
 
 # Attribution
 This repository utilizes Ubisoft La Forge's [ZeroEGGS](https://arxiv.org/abs/2209.07556) gesture generation AI model. You are encouraged to browse around their [repository](https://github.com/ubisoft/ubisoft-laforge-ZeroEGGS/) and to contact the authors if you have any questions about it!
