@@ -40,17 +40,40 @@ docker exec -it <container ID> bash
 # Export the FBX
 /blender/blender-2.83.0-linux64/blender -b --python "/app/genea_visualizer/export_fbx.py" -- -b "/app/output/bvh/output_motion.bvh" -m "/app/genea_visualizer/model/LaForgeMale.fbx" -o "/app/output/fbx/output_motion.fbx"
 
-======================
-Useful Docker Commands
-======================
+=================
+Docker Deployment
+=================
+# Kill all containers
+- sudo docker kill $(sudo docker ps -q)
 
-- kill all containers : sudo docker kill $(sudo docker ps -q)
-- delete all stopped containers : sudo docker rm $(sudo docker ps -a -q)
+# Delete all stopped containers
+- sudo docker rm $(sudo docker ps -a -q)
 
-Requires netstat
+# Cleanup
+- sudo docker volume rm $(sudo docker volume ls -q)
+- sudo docker system prune
+
+# Pull repo
+- git pull
+
+# Build images
+- sudo docker compose build
+
+# Run images
+- sudo docker compose up -d
+
+(bonus) Requires netstat
 - sudo apt update
 - sudo apt install net-tools
 - sudo netstat -tulpn | grep LISTEN
+
+### Production server
+# Change env variables in .env
+- WORKER_COUNT_GESGEN=4
+- WORKER_COUNT_VISUAL=4
+
+### Development server
+# Do not change env variables in .env
 
 ==========================
 Setting up Docker on Linux
