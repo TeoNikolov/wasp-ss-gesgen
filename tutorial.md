@@ -43,7 +43,7 @@ The first task is to use the ZeroEGGS AI model to generate gestures from audio. 
 ## Web server
 1. Open the server web page.
 2. Click on the file input button after "Audio (WAV)" and pick a WAV audio file for which you want to generate an animation with gestures.
-3. Choose a starting pose from the list after "Choose a starting pose". The corresponding pose will be used as the first frame of your generated animation.
+3. Choose a starting pose from the list after "Choose a starting pose". The corresponding pose will be used as the first frame of your generated animation. You can find previews of the poses [here](https://github.com/TeoNikolov/wasp-ss2023-gesgen/tree/main/data/start_poses/images).
 4. Pick a style for your animation from the list after "Choose a style". This will act as a guide for the generated animations.
 5. Pick a "temperature" value for gesture generation. A higher value will tell the ZeroEGGS model to generate gestures that are similar to the style you have selected. A lower value will have the opposite effect and the generated gestures will be influenced less by the selected style.
 6. Changing the seed lets you generate a different animation even for the same input. Keeping the seed fixed lets you tweak the parameters without adding additional randomness.
@@ -68,7 +68,7 @@ The `/data/` and `/output/` folders located in the gesture generation repository
     - `-a` : Input audio file.
     - `-p` : Folder in which the motion and a copy of the audio will be output to.
     - `-r` : The random seed to use for generation.
-    - `-fp` : File containing a pose sample to use as the first pose of the generated animation.
+    - `-fp` : File containing a pose sample to use as the first pose of the generated animation. You can find previews of the poses [here](https://github.com/TeoNikolov/wasp-ss2023-gesgen/tree/main/data/start_poses/images).
     - `-n` : Name of the output BVH file.
     - `-t` : Temperature of the model, between `0.0` and `1.0`. A higher value causes the model to generate gestures that are similar to the chosen style; a lower value has the opposite effect.
 
