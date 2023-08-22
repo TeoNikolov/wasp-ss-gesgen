@@ -60,7 +60,7 @@ This repo is licensed under the *CC BY-NC-SA 4.0* license. You can find an overv
 
 # Attribution
 
-When making use of this repository whether it is code or showing example output, please credit our work by including the **repo link** and our **names** in your document. We would greatly appreciate it!
+When making use of this repository whether it is code or showing example output, please credit our work by including the **repo link** (https://github.com/TeoNikolov/wasp-ss2023-gesgen) and our **names** (Teodor Nikolov, Mihail Tsakov, Taras Kucherenko) in your documents. We would greatly appreciate it!
 
 **ZeroEGGS**
 
