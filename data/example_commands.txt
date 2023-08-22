@@ -87,3 +87,11 @@ Add key
 
 Install Docker
 - https://docs.docker.com/engine/install/ubuntu/
+
+=========
+Rendering
+=========
+- UE export as image sequence
+
+# Combine images into video
+- ffmpeg -framerate 30 -pattern_type glob -i '*.png' -c:v libx264 -pix_fmt yuv420p out.mp4
