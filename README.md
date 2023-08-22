@@ -59,9 +59,12 @@ This repo is licensed under the *CC BY-NC-SA 4.0* license. You can find an overv
 **Disclaimer:** The license in this repo does not apply to the ZeroEGGS system; it has [its own license](https://github.com/ubisoft/ubisoft-laforge-ZeroEGGS/blob/main/License.md). Please contact its authors in case you have any questions.
 
 # Attribution
-This repository utilizes Ubisoft La Forge's [ZeroEGGS](https://arxiv.org/abs/2209.07556) gesture generation AI model. We are very thankful that they let us use their model for the summer school!
 
-You are encouraged to browse the [ZeroEGGS repo](https://github.com/ubisoft/ubisoft-laforge-ZeroEGGS/) and to contact the authors if you have any questions about the model or using it for your own projects!
+When making use of this repository whether it is code or showing example output, please credit our work by including the **repo link** and our **names** in your document. We would greatly appreciate it!
+
+**ZeroEGGS**
+
+This repository utilizes Ubisoft La Forge's [ZeroEGGS](https://arxiv.org/abs/2209.07556) gesture generation AI model. We are very thankful that they let us use their model for the summer school! You are encouraged to browse the [ZeroEGGS repo](https://github.com/ubisoft/ubisoft-laforge-ZeroEGGS/) and to contact the authors if you have any questions about the model or using it for your own projects!
 
 # Contact
 If you have any questions, feel free to contact these folks via email:
