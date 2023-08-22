@@ -1,5 +1,5 @@
 # Introduction
-This repository contains various modules and code needed for completing the "Gesture Generation" tutorial for the WASP Summer School 2023. Later, the students will also use what they have learned here to generate gestures as part of a final student assignment; these gestures will be visualised in the [Norrköping Visualisation Center](https://visualiseringscenter.se/en).
+This repository contains various modules and code needed for completing the "Gesture Generation" tutorial for the [WASP Summer School 2023 student assignment](https://github.com/Svito-zar/wasp-2023-summer-school/). Later, the students will also use what they have learned here to generate gestures as part of a final student assignment; these gestures will be visualised in the [Norrköping Visualisation Center](https://visualiseringscenter.se/en).
 
 The solution is composed of multiple modules, each of which has its own responsibilities.
 - A *gesture generation* module generates gesture animations using an AI model. Currently, we are using the [ZeroEGGS](https://github.com/ubisoft/ubisoft-laforge-ZeroEGGS) AI model developed by Saeed Ghorbani and his colleagues at Ubisoft LaForge.
