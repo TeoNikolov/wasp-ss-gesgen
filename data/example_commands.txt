@@ -91,7 +91,24 @@ Install Docker
 =========
 Rendering
 =========
-- UE export as image sequence
+- export image sequence from UE using Render Queue
+	- make sure to use "{frame_number_rel}" instead of "{frame_number}"
 
 # Combine images into video
-- ffmpeg -framerate 30 -pattern_type glob -i '*.png' -c:v libx264 -pix_fmt yuv420p out.mp4
+- ffmpeg -framerate 30 -i 'file.name.%04d.png' -c:v libx264 -pix_fmt yuv420p out.mp4
+
+=================
+Celery Monitoring
+=================
+
+# List active nodes
+celery -A proj status
+
+# Check worker status
+celery -A proj inspect active
+celery -A proj inspect scheduled
+
+# Check worker statistics
+celery -A proj inspect stats
+
+
