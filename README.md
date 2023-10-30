@@ -2,8 +2,8 @@
 This repository contains various modules and code needed for completing the "Gesture Generation" tutorial for the [WASP Summer School 2023 student assignment](https://github.com/Svito-zar/wasp-2023-summer-school/). Later, the students will also use what they have learned here to generate gestures as part of a final student assignment; these gestures will be visualised in the [Norrköping Visualisation Center](https://visualiseringscenter.se/en).
 
 The solution is composed of multiple modules, each of which has its own responsibilities.
-- A *gesture generation* module generates gesture animations using an AI model. Currently, we are using the [ZeroEGGS](https://github.com/ubisoft/ubisoft-laforge-ZeroEGGS) AI model developed by Saeed Ghorbani and his colleagues at Ubisoft LaForge.
-- A *visualisation* module which visualises gesture data in the form of a video. It also allows the export of gesture data to FBX.
+- A *gesture generation* module generates gesture animations using an AI model. We use the [ZeroEGGS](https://github.com/ubisoft/ubisoft-laforge-ZeroEGGS) AI model developed by Saeed Ghorbani and his colleagues at Ubisoft LaForge.
+- A *visualisation* module which visualises gesture data in the form of a video. It also allows the export of gesture data to FBX. We use the [GENEA Challenge 2022 Visualizer](https://github.com/TeoNikolov/genea_visualizer/tree/archive_2022).
 - A *web app* module provides access to the two systems above via a web page you can access in your browser.
 
 *TODO: A low-level description of the various modules such as libraries or variables is currently missing. This information will not be prioritized DURING the summer school; you can check if the repo is updated sometime in September. However, you can still see various commands actively used by the system in the [gesture generation tutorial](https://github.com/TeoNikolov/wasp-ss2023-gesgen/blob/main/tutorial.md).*
