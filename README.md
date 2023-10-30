@@ -28,9 +28,9 @@ However, a local setup may be useful to you if you wish to learn in-depth about 
 
 ## Build the Docker images
 Build the Docker images by running `docker compose build`. This will build the following images:
-- `wasp-ss2023-gesgen` - This contains the ZeroEGGS gesture generation AI model.
-- `wasp-ss2023-visual` - This contains Blender and scripts that make it possible to render motion (BVH) and audio (WAV) data into a video (MP4). It is also possible to convert from BVH to FBX format.
-- `wasp-ss2023-web` - This exposes the other systems via the web. Without this, you can only use the command line interface to interact with the other modules.
+- `wasp-ss2023-gesgen` - This contains the [ZeroEGGS](https://github.com/ubisoft/ubisoft-laforge-ZeroEGGS) gesture generation AI model.
+- `wasp-ss2023-visual` - This contains Blender scripts from the [GENEA Challenge 2022 Visualizer](https://github.com/TeoNikolov/genea_visualizer/tree/archive_2022) that make it possible to render motion (BVH) and audio (WAV) data into a video (MP4). It also has Blender scripts for converting from BVH to FBX format.
+- `wasp-ss2023-web` - This houses the web server and REST API. This makes it possible to interact with the other modules via the web browser or command line.
 
 *Building the images can take a while.*
 
