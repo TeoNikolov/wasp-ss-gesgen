@@ -75,8 +75,6 @@ You can either use the deployed web server OR a CLI that can attach to the Docke
 # Folders and Files
 *TODO*
 
-This section provides information about the various folders and files in this repository. Note that only the most important folders and files are included to keep this section short.
-
 Folders are *italicized*; files are not.
 - *root*
     - .env - Contains environment variables set inside all Docker containers.
