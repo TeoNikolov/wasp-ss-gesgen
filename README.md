@@ -41,8 +41,36 @@ The `-d` flag deploys the containers in *detached mode* so that the terminal rem
 
 You should be able to open a web page at `localhost:5001` if all containers started without errors. If the web page does not load, then most likely the `wasp-ss2023-web` container is not running or has crashed, or that your firewall is blocking port `5001`.
 
-# How to use
-You can either use the web server that is deployed OR you can use a command line interface (CLI) that attaches to the various Docker containers. A complete description of the workflow can be found [here](https://github.com/TeoNikolov/wasp-ss2023-gesgen/blob/main/tutorial.md).
+# VM Setup
+Repo
+- `cd ~/`
+- `mkdir src
+- `cd src`
+- `git clone https://github.com/TeoNikolov/wasp-ss2023-gesgen.git`
+- `git checkout 2024`
+
+Docker
+- [https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository)
+- `sudo docker compose build`
+- `sudo docker compose up -d`
+
+(If error)
+- `sudo systemctl restart docker`
+- `sudo docker compose build`
+- `sudo systemctl restart docker`
+
+(If still error)
+- Check if cgroups are already mounted
+	- `cat /proc/self/cgroup | grep devices`
+	- E.g. `1:name=systemd:/user/docker/12345.devices`
+- Mount cgroups manually
+	- `sudo mkdir /sys/fs/cgroup/devices`
+	- `sudo mount -t cgroup -o devices devices /sys/fs/cgroup/devices`
+- Restart Docker
+	- `sudo systemctl restart docker`
+
+# Usage
+You can either use the deployed web server OR a CLI that can attach to the Docker containers. The workflow is described [here](https://github.com/TeoNikolov/wasp-ss2023-gesgen/blob/main/tutorial.md).
 
 # Folders and Files
 *TODO*
