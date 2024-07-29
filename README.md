@@ -20,19 +20,20 @@ This is not required as WASP already hosts a web server that you can use.
 However, a local setup may be useful to you if you wish to learn in-depth about how the system works and if you wish to modify or add any (source) files. This will also be useful in the potential scenario that the WASP server crashes or if there are networking-related issues between your machine and the WASP server.
 
 ## Prerequisites
-- Make sure you have cloned this repository on your machine by running `git clone https://github.com/TeoNikolov/wasp-ss2023-gesgen/`.
-- Make sure that `git` is installed on your machine. On Ubuntu, you can run `sudo apt-get install git-all` to download `git`. On Windows, you can download [Git for Windows](https://git-scm.com/downloads).
-- Make sure to install Docker by refering to [these instructions](https://www.docker.com/products/docker-desktop/). You are encouraged to download the **latest version** to avoid potential issues with deploying the gesture generation system. Run `docker run hello-world` to test your installation; you should see *"Hello from Docker!"* in your terminal.
-- Make sure Docker is running before continuing with the setup. You can test this by running `docker run hello-world`.
+- Make sure that `git` is installed on your machine. On Ubuntu, you can run `sudo apt-get install git-all`. On Windows, you can download [Git for Windows](https://git-scm.com/downloads).
+- Clone this repository to your machine with `git clone https://github.com/TeoNikolov/wasp-ss2023-gesgen/`.
+- [Install](https://www.docker.com/products/docker-desktop/) the latest version of Docker. Verify your installation by running `docker run hello-world`; you should see *"Hello from Docker!"* in your terminal.
+- Make sure Docker is running. You can test this by running `docker run hello-world`.
 - If you wish to use the command line interface instead of the web app, set `SERVER_MODE` to `0` inside the `.env` file.
 
 ## Build the Docker images
-Build the Docker images by running `docker compose build`. This will build the following images:
-- `wasp-ss2023-gesgen` - This contains the [ZeroEGGS](https://github.com/ubisoft/ubisoft-laforge-ZeroEGGS) gesture generation AI model.
-- `wasp-ss2023-visual` - This contains Blender scripts from the [GENEA Challenge 2022 Visualizer](https://github.com/TeoNikolov/genea_visualizer/tree/archive_2022) that make it possible to render motion (BVH) and audio (WAV) data into a video (MP4). It also has Blender scripts for converting from BVH to FBX format.
-- `wasp-ss2023-web` - This houses the web server and REST API. This makes it possible to interact with the other modules via the web browser or command line.
+Run `docker compose build` to build the following Docker images (this can take a while):
 
-*Building the images can take a while.*
+- `wasp-ss2023-gesgen` : This contains the [ZeroEGGS](https://github.com/ubisoft/ubisoft-laforge-ZeroEGGS) gesture generation AI model.
+
+- `wasp-ss2023-visual` : This contains scripts for visualizing animations. It is based on the [GENEA Challenge 2022 Visualizer](https://github.com/TeoNikolov/genea_visualizer/tree/archive_2022) visualizer that renders `.bvh` motion and `.wav` audio data into a `.mp4` video. There are also Blender scripts to convert `.bvh` to `.fbx`.
+
+- `wasp-ss2023-web` : This houses the web server and REST API. This makes it possible to interact with the other modules via the web browser or command line.
 
 ## Deploy the Docker images
 Deploying containers from the images is done by running `docker compose up -d`.
