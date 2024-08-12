@@ -12,7 +12,7 @@ function populateStyleSelector(styles) {
 function populatePoseSelector(poses) {
     const selectElement = document.getElementById('pose-selector');
     selectElement.innerHTML = '';
-    poses.sort();
+    poses.sort((a, b) => parseInt(a.replace('pose_', ''), 10) - parseInt(b.replace('pose_', ''), 10));
     poses.forEach(style => {
         const option = document.createElement('option');
         option.text = style;
