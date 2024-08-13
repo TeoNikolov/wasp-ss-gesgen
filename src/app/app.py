@@ -56,6 +56,14 @@ async def get_poses(response: Response):
 	
 	return bvh_files
 
+@app.get("/pose_images/{image_name}")
+async def get_image(image_name: str):
+    image_path = Path(f"/app/data/start_poses/images/{image_name}")
+    if not image_path.is_file():
+        raise HTTPException(status_code=404, detail="Image not found.")
+    
+    return FileResponse(image_path)
+
 @app.post("/generate_bvh/", status_code=202)
 async def generate_bvh(
 	style : str = Form(...),

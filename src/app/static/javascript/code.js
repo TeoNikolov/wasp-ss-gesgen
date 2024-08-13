@@ -20,6 +20,12 @@ function populatePoseSelector(poses) {
     })
 }
 
+function displayPoseImage(imageUrl) {
+    const imageElement = document.getElementById('pose-image');
+    imageElement.src = imageUrl;
+    imageElement.style.display = 'inline';
+}
+
 function isNumberKey(event) {
     var charCode = (event.which) ? event.which : event.keyCode
     if (charCode > 31 && (charCode < 48 || charCode > 57))

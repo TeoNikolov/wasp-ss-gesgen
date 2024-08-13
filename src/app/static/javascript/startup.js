@@ -7,6 +7,32 @@ function startup() {
     getPoses()
         .then((poses) => {
             populatePoseSelector(poses);
+
+            const poseImageFilenames = poses.map(pose => `${pose}.png`);
+            getPoseImages(poseImageFilenames)
+                .then((images) => {
+                    const imageFilesArray = images.map(image => ({
+                        name: image.imageName,
+                        url: image.url
+                    }));
+                    
+                    const poseSelector = document.getElementById('pose-selector');
+                    poseSelector.addEventListener('change', (event) => {
+                        const selectedPose = event.target.value;
+                        const selectedImage = imageFilesArray.find(image => image.name === `${selectedPose}.png`);
+                        if (selectedImage) {
+                            displayPoseImage(selectedImage.url);
+                        }
+                    });
+                    
+                    const initialPose = poseSelector.value;
+                    if (initialPose) {
+                        const initialImage = imageFilesArray.find(image => image.name === `${initialPose}.png`);
+                        if (initialImage) {
+                            displayPoseImage(initialImage.url);
+                        }
+                    }
+                });
         });
 
     // add form listeners

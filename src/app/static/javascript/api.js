@@ -18,6 +18,26 @@ async function getPoses() {
     }
 }
 
+async function getPoseImages(imageNames) {
+    try {
+        const imagePromises = imageNames.map(async (imageName) => {
+            const response = await fetch(`/pose_images/${imageName}`);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch image: ${imageName}`);
+            }
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            return { imageName, url };
+        });
+
+        const images = await Promise.all(imagePromises);
+        return images;
+    } catch (error) {
+        console.error('Error fetching images:', error);
+        return [];
+    }
+}
+
 async function getCheckJob(jobId) {
     try {
         const response = await fetch("/job_id/" + jobId);
