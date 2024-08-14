@@ -78,7 +78,7 @@ async def generate_bvh(
 	if len(pose) == 0:
 		raise HTTPException(status_code = 400, detail=f"Pose name cannot be empty!")
 
-	if audio.content_type != "audio/wav":
+	if audio.content_type not in ["audio/wav", "audio/x-wav"]:
 		raise HTTPException(status_code = 400, detail=f"Audio must be a WAV file! Got {audio.content_type}")
 
 	if temperature < 0 or temperature > 1:
