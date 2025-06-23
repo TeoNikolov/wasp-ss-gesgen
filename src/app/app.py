@@ -14,10 +14,16 @@ from io import BytesIO
 from fastapi import FastAPI, HTTPException, Response, Form, File, UploadFile
 from starlette.responses import FileResponse, StreamingResponse
 from starlette.staticfiles import StaticFiles
-from typing_extensions import Annotated
+
+
 
 from celery import Celery
 import celery.states as states
+
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 celery_workers = Celery(
 	"tasks",
@@ -25,14 +31,14 @@ celery_workers = Celery(
 	backend=os.environ["CELERY_RESULT_BACKEND"],
 )
 
-app = FastAPI()	
+app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/")
 async def home(response: Response):
 	return FileResponse("./index.html")
 
-@app.get("/styles/")
+@app.get("/styles")
 async def get_styles(response: Response):
 	search_path = Path("/app/data/styles/")
 	if not search_path.is_dir():
@@ -44,7 +50,7 @@ async def get_styles(response: Response):
 	
 	return bvh_files
 
-@app.get("/poses/")
+@app.get("/poses")
 async def get_poses(response: Response):
 	search_path = Path("/app/data/start_poses/")
 	if not search_path.is_dir():
@@ -64,7 +70,7 @@ async def get_image(image_name: str):
     
     return FileResponse(image_path)
 
-@app.post("/generate_bvh/", status_code=202)
+@app.post("/generate_bvh", status_code=202)
 async def generate_bvh(
 	style : str = Form(...),
 	audio : UploadFile = File(...),
@@ -107,11 +113,17 @@ async def generate_bvh(
 	except Exception:
 		raise HTTPException(status_code = 500, detail="Failed to process audio file.")
 
-@app.post("/visualise/", status_code=202)
+@app.post("/visualise", status_code=202)
 async def visualise(
 	audio : UploadFile = File(...),
 	motion : UploadFile = File(...),
 ):
+	if audio.content_type not in ["audio/wav", "audio/x-wav"]:
+		raise HTTPException(status_code = 400, detail=f"Audio must be a WAV file! Got {audio.content_type}")
+
+	if motion.content_type != "application/octet-stream":
+		raise HTTPException(status_code = 400, detail=f"Motion file must be a BVH file! Got {motion.content_type}")
+
 	# save audio to shared storage
 	audio_content = await audio.read()
 	audio_filename = str(uuid.uuid4()) + ".wav"
@@ -133,7 +145,7 @@ async def visualise(
 	task = celery_workers.send_task("visual.tasks.visualise", kwargs=task_args, queue="q_visual")
 	return task.id
 
-@app.post("/export_fbx/", status_code=202)
+@app.post("/export_fbx", status_code=202)
 async def export_fbx(
 	motion : UploadFile = File(...),
 ):

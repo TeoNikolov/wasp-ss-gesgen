@@ -56,6 +56,18 @@ function startup() {
     seed_numeric.addEventListener('keypress', function(e) {return isNumberKey(e); })
 }
 
+function showError(message, target) {
+    const errorDiv = document.getElementById(`error-message-${target}`);
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+}
+
+function hideError(target) {
+    const errorDiv = document.getElementById(`error-message-${target}`);
+    errorDiv.style.display = 'none';
+    errorDiv.textContent = '';
+}
+
 function disableFormButton(form) {
     form.submit.disabled = true;
 }
@@ -90,6 +102,7 @@ function submitFormGesGen(event) {
 
 function submitFormVis(event) {
     event.preventDefault();
+    hideError("visual");
     const form_vis = document.getElementById("form-vis");
     const data = new FormData(form_vis);
     disableFormButton(form_vis);
@@ -109,6 +122,11 @@ function submitFormVis(event) {
                 }
                 enableFormButton(form_vis);
             });
+        })
+        .catch((error) => {
+            console.error("Error during postVisualise or polling:", error);
+            showError(error.message, "visual");
+            enableFormButton(form_vis);
         });
 }
 

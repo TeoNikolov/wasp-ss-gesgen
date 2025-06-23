@@ -1,6 +1,6 @@
 async function getStyles() {
     try {
-        const response = await fetch('/styles/');
+        const response = await fetch('/styles');
         const data = await response.json();
         return data;
     } catch (error) {
@@ -10,7 +10,7 @@ async function getStyles() {
 
 async function getPoses() {
     try {
-        const response = await fetch('/poses/');
+        const response = await fetch('/poses');
         const data = await response.json();
         return data;
     } catch (error) {
@@ -75,19 +75,18 @@ async function postGenerateBVH(form_data) {
 }
 
 async function postVisualise(form_data) {
-    try {
-        const response = await fetch(
-            '/visualise',
-            {
-                method: 'POST',
-                body: form_data
-            },
-        );
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error visualising BVH and WAV:', error);
+    const response = await fetch(
+        '/visualise',
+        {
+            method: 'POST',
+            body: form_data
+        },
+    );
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(`Failed to visualise: ${data.detail}, ${response.status}`);
     }
+    return data
 }
 
 async function postExportFBX(form_data) {
