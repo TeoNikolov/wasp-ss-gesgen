@@ -1,5 +1,3 @@
-version: '3.8'
-
 volumes:
     temp_storage:
 
@@ -8,6 +6,8 @@ services:
         build:
             context: ./src/ZeroEGGS/
             dockerfile: Dockerfile
+        container_name: wasp-gesgen
+        image: wasp/gesgen
         depends_on:
           - redis
         environment:
@@ -16,7 +16,6 @@ services:
           - CELERY_WORKER_TIMEOUT=${CELERY_WORKER_TIMEOUT}
           - SERVER_MODE=${SERVER_MODE}
           - WORKER_COUNT_GESGEN=${WORKER_COUNT_GESGEN}
-        image: wasp-ss2023-gesgen
         volumes:
           - './data:/app/data:ro'
           - './output:/app/output'
@@ -28,7 +27,8 @@ services:
         build:
             context: ./src/genea_visualizer/
             dockerfile: Dockerfile
-        image: wasp-ss2023-visual
+        container_name: wasp-visual
+        image: wasp/visual
         depends_on:
           - redis
         environment:
@@ -44,7 +44,7 @@ services:
             source: 'temp_storage'
             target: /shared_storage/
           - ./src/genea_visualizer:/app/genea_visualizer
-    web:
+    webapp:
         build:
             context: ./src/app/
             dockerfile: Dockerfile
@@ -55,7 +55,8 @@ services:
           - CELERY_BROKER_URL=${CELERY_BROKER_URL}
           - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
           - SERVER_MODE=${SERVER_MODE}
-        image: wasp-ss2023-web
+        container_name: wasp-webapp
+        image: wasp/webapp
         ports:
           - ${PUBLIC_WEB_PORT}:${INTERNAL_WEB_PORT}
         volumes:
@@ -67,3 +68,4 @@ services:
           - ./src/app:/app
     redis:
         image: redis:7-alpine
+        container_name: wasp-redis

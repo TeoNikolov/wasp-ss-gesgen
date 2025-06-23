@@ -2,10 +2,10 @@
 
 SESSION_NAME="wasp"
 
-CONTAINER_WEB="wasp-ss-gesgen-web-1"
-CONTAINER_VISUAL="wasp-ss-gesgen-visual-1"
-CONTAINER_GESGEN="wasp-ss-gesgen-gesgen-1"
-CONTAINER_REDIS="wasp-ss-gesgen-redis-1"
+CONTAINER_WEB="wasp-webapp"
+CONTAINER_VISUAL="wasp-visual"
+CONTAINER_GESGEN="wasp-gesgen"
+CONTAINER_REDIS="wasp-redis"
 
 # Check if the session already exists
 if tmux has-session -t $SESSION_NAME 2>/dev/null; then
