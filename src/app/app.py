@@ -149,6 +149,9 @@ async def visualise(
 async def export_fbx(
 	motion : UploadFile = File(...),
 ):
+	if motion.content_type != "application/octet-stream":
+		raise HTTPException(status_code = 400, detail=f"Motion file must be a BVH file! Got {motion.content_type}")
+
 	# save motion to shared storage
 	motion_content = await motion.read()
 	motion_filename = str(uuid.uuid4()) + ".bvh"

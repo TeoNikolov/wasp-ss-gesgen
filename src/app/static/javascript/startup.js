@@ -59,7 +59,7 @@ function startup() {
 function showError(message, target) {
     const errorDiv = document.getElementById(`error-message-${target}`);
     errorDiv.textContent = message;
-    errorDiv.style.display = 'block';
+    errorDiv.style.display = 'inline-block';
 }
 
 function hideError(target) {
@@ -78,6 +78,7 @@ function enableFormButton(form) {
 
 function submitFormGesGen(event) {
     event.preventDefault();
+    hideError("gesgen");
     const form_gg = document.getElementById("form-gesgen");
     const data = new FormData(form_gg);
     disableFormButton(form_gg);
@@ -97,6 +98,11 @@ function submitFormGesGen(event) {
                 }
                 enableFormButton(form_gg);
             });
+        })
+        .catch((error) => {
+            console.error("Error during generation:", error);
+            showError(error.message, "gesgen");
+            enableFormButton(form_gg);
         });
 }
 
@@ -124,7 +130,7 @@ function submitFormVis(event) {
             });
         })
         .catch((error) => {
-            console.error("Error during postVisualise or polling:", error);
+            console.error("Error during visualization:", error);
             showError(error.message, "visual");
             enableFormButton(form_vis);
         });
@@ -132,6 +138,7 @@ function submitFormVis(event) {
 
 function submitFormFBX(event) {
     event.preventDefault();
+    hideError("export");
     const form_fbx = document.getElementById("form-fbx");
     const data = new FormData(form_fbx);
     disableFormButton(form_fbx);
@@ -151,5 +158,10 @@ function submitFormFBX(event) {
                 }
                 enableFormButton(form_fbx);
             });
+        })
+        .catch((error) => {
+            console.error("Error during export:", error);
+            showError(error.message, "export");
+            enableFormButton(form_fbx);
         });
 }

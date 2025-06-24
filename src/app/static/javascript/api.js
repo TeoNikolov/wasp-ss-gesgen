@@ -59,19 +59,18 @@ async function getFiles(jobId) {
 }
 
 async function postGenerateBVH(form_data) {
-    try {
-        const response = await fetch(
-            '/generate_bvh',
-            {
-                method: 'POST',
-                body: form_data
-            },
-        );
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error requesting generation of BVH:', error);
+    const response = await fetch(
+        '/generate_bvh',
+        {
+            method: 'POST',
+            body: form_data
+        },
+    );
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(`Failed to generate BVH: ${data.detail}, ${response.status}`);
     }
+    return data;
 }
 
 async function postVisualise(form_data) {
@@ -84,23 +83,22 @@ async function postVisualise(form_data) {
     );
     const data = await response.json();
     if (!response.ok) {
-        throw new Error(`Failed to visualise: ${data.detail}, ${response.status}`);
+        throw new Error(`Failed to visualise MP4: ${data.detail}, ${response.status}`);
     }
     return data
 }
 
 async function postExportFBX(form_data) {
-    try {
-        const response = await fetch(
-            '/export_fbx',
-            {
-                method: 'POST',
-                body: form_data
-            },
-        );
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error exporting FBX:', error);
+    const response = await fetch(
+        '/export_fbx',
+        {
+            method: 'POST',
+            body: form_data
+        },
+    );
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(`Failed to export FBX: ${data.detail}, ${response.status}`);
     }
+    return data;
 }
